@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mtani <mtani@student.42.fr>                +#+  +:+       +#+         #
+#    By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/05/14 16:52:51 by mtani            ###   ########.fr        #
+#    Updated: 2024/05/14 17:42:51 by gsapio           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_MANDATORY	=	main.c \
-					parsing/parsing.c
+					parsing/parsing.c parsing/bit_colors.c
 
 LFLAGS = -lft -L./Libft -lmlx -Lminilibx-linux -lX11 -lXext -no-pie
 

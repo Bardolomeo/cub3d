@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:41:48 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/14 17:39:02 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/14 17:56:28 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	skip_spaces(char *str)
 	return (i);
 }
 
-void	set_color(char *str, int *color, t_mlx *mlx)
+void	set_color(char *str, int *color)
 {
 	int		i;
 	char	**rgb_s;
@@ -77,15 +77,15 @@ void	set_color(char *str, int *color, t_mlx *mlx)
 			ft_atoi(rgb_s[2]));
 }
 
-void	set_image(char *str, t_image image, t_mlx *mlx)
+void	set_image(char *str, t_image *image, t_mlx *mlx)
 {
 	int		i;
 	char	*filename;
 
 	i = skip_spaces(str);
 	filename = ft_strtrim(str + i, "\n");
-	image.img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, filename,
-			&image.i_width, &image.i_height);
+	image->img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, filename,
+			&image->i_width, &image->i_height);
 }
 
 int	get_texture(char *str, t_mlx *mlx)
@@ -94,17 +94,17 @@ int	get_texture(char *str, t_mlx *mlx)
 
 	i = skip_spaces(str);
 	if (ft_strncmp(str + i, "NO ", 3) == 0)
-		set_image(str + i + 3, mlx->images[NO], mlx);
+		set_image(str + i + 3, &mlx->images[NO], mlx);
 	else if (ft_strncmp(str + i, "SO ", 3) == 0)
-		set_image(str + i + 3, mlx->images[SO], mlx);
+		set_image(str + i + 3, &mlx->images[SO], mlx);
 	else if (ft_strncmp(str + i, "WE ", 3) == 0)
-		set_image(str + i + 3, mlx->images[WE], mlx);
+		set_image(str + i + 3, &mlx->images[WE], mlx);
 	else if (ft_strncmp(str + i, "EA ", 3) == 0)
-		set_image(str + i + 3, mlx->images[EA], mlx);
+		set_image(str + i + 3, &mlx->images[EA], mlx);
 	else if (ft_strncmp(str + i, "F ", 2) == 0)
-		set_color(str + i + 2, &mlx->floor_color, mlx);
+		set_color(str + i + 2, &mlx->floor_color);
 	else if (ft_strncmp(str + i, "C ", 2) == 0)
-		set_color(str + i + 2, &mlx->ceiling_color, mlx);
+		set_color(str + i + 2, &mlx->ceiling_color);
 	else if (*(str + i) == '\n' || *(str + i) == '1')
 		return (1);
 	else
@@ -136,26 +136,22 @@ int	check_elements(int fd, char **argv, t_mlx *mlx)
 		temp = get_next_line(fd);
 	}
 	close(fd);
-	if (!check_all_elements())
-	{
-		perror("Error\n");
+	if (!check_all_elements(mlx))
 		return (0);
-	}
 	return (1);
 }
 
 int	parse_elements(int argc, char **argv, t_mlx *mlx)
 {
-	char	*extension;
 	int		fd;
 
 	fd = -2;
 	if (argc != 2)
 		perror("Wrong number of arguments\n");
-	else if (ft_strncmp(ft_strchr(argv[0], '.'), ".cub", 5))
+	else if (ft_strncmp(ft_strchr(argv[1], '.'), ".cub", 4))
 		perror("Invalid file extension\n");
 	else if (!check_elements(fd, argv, mlx))
-		perror("Invalid configuration\n");
+		perror("Error ");
 	// else if (!check_map(fd, argv, mlx))
 	// 	perror("Invalid map\n");
 	else

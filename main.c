@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/14 17:40:53 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/14 17:56:57 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,28 @@ void	init_elements(t_mlx *mlx)
 		i++;
 	}
 }
+void	print_elements(t_mlx *mlx)
+{
+	int	i;
+
+	i = -1;
+	printf("ceiling color: %d\n", mlx->ceiling_color);
+	printf("floor color: %d\n", mlx->floor_color);
+	while (++i < 4)
+	{
+		printf("image ptr: %p    h: %d    w: %d\n", mlx->images[i].img_ptr, mlx->images[i].i_height, mlx->images[i].i_width);
+	}
+}
 
 int	main(int argc, char **argv)
 {
 	t_mlx	mlx;
 
+	mlx.mlx_ptr = mlx_init();
 	init_elements(&mlx);
 	if (!parse_elements(argc, argv, &mlx))
 		return (0);
-	mlx.mlx_ptr = mlx_init();
+	print_elements(&mlx);
 	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, 1920, 1080, "Vermin");
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_loop(mlx.mlx_ptr);

@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/cub3D",
-            "args": [],
+            "args": ["maps/test.cub"],
             "cwd": "${workspaceFolder}",
             "environment": [],
             "MIMode": "gdb",
