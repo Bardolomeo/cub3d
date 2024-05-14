@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:18:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/14 14:51:54 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/14 17:23:39 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t				ft_strlen(const char *s);
+int					ft_atoi(const char *nptr);
 /*Write on file operations*/
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);

@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/14 16:40:07 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/14 17:36:03 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,26 @@ int	handler_func(t_mlx *mlx)
 	mlx_loop_end(mlx->mlx_ptr);
 	return (0);
 }
+void	init_elements(t_mlx *mlx)
+{
+	int	i;
+
+	i = 0;
+	mlx->ceiling_color = 0;
+	mlx->floor_color = 0;
+	mlx->map = NULL;
+	while (i < 4)
+	{
+		mlx->images[i].img_ptr = NULL;
+		i++;
+	}
+}
 
 int	main(int argc, char **argv)
 {
 	t_mlx	mlx;
 
-	(void)argc;
-	if (!argv)
-		printf ("amazing");
+	init_elements(&mlx);
 	if (!parse_elements(argc, argv, &mlx))
 		return (0);
 	mlx.mlx_ptr = mlx_init();
