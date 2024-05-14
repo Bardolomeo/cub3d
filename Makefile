@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+         #
+#    By: mtani <mtani@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/05/13 17:45:19 by gsapio           ###   ########.fr        #
+#    Updated: 2024/05/14 16:52:51 by mtani            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,10 @@ LFLAGS = -lft -L./Libft -lmlx -Lminilibx-linux -lX11 -lXext -no-pie
 IFLAGS = -I./Libft -I./minilibx_linux
 
 PATH_LIBS =
+
+MLX = "https://github.com/42Paris/minilibx-linux.git"
+
+MLX_DIR = minilibx-linux
 
 LIBFT_PATH = Libft
 
@@ -46,14 +50,18 @@ all:			$(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -I $(HEADER) -c $< -o $@
 
-$(NAME):		$(OBJS_MANDATORY)
+$(NAME):		$(MLX_DIR) $(OBJS_MANDATORY)
 				make -C $(LIBFT_PATH) --no-print-directory
 				make bonus -C $(LIBFT_PATH) --no-print-directory
 				make -C $(MLX_PATH) --no-print-directory
 				$(CC) $(CFLAGS) $(OBJS_MANDATORY) $(LFLAGS) $(IFLAGS) -o $(NAME)
 
-Bonus/%.o: Bonus/%.c
-	$(CC) $(CFLAGS) -I /Bonus -c $< -o $@
+$(MLX_DIR):
+				@git clone $(MLX)
+				@cd $(MLX_DIR) && ./configure
+
+Bonus/%.o: 		Bonus/%.c
+				$(CC) $(CFLAGS) -I /Bonus -c $< -o $@
 
 $(BONUS_NAME):	$(OBJS_BONUS)
 				make -C $(LIBFT_PATH) --no-print-directory
