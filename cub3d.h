@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42firenze.it >      +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/14 17:20:13 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/20 18:28:23 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_rgb
 	int		b;
 }			t_rgb;
 
-int			parse_elements(int argc, char **argv, t_mlx *mlx);
+int			parse_file(int argc, char **argv, t_mlx *mlx);
 
 // bit_colors
 int			create_trgb(int t, int r, int g, int b);
@@ -55,5 +55,22 @@ int			get_t(int trgb);
 int			get_r(int trgb);
 int			get_g(int trgb);
 int			get_b(int trgb);
+
+// Utils
+int			destroy_game(t_mlx *mlx);
+int			destroy_game_on_start(t_mlx *mlx);
+int			error_fclose(int *fd);
+
+/* Parsing */
+int			check_all_elements(t_mlx *mlx);
+void		set_color(char *str, int *color);
+void		set_image(char *str, t_image *image, t_mlx *mlx);
+int			get_elements(char *str, t_mlx *mlx);
+int			check_elements(int fd, char **argv, t_mlx *mlx);
+int			skip_spaces(char *str);
+int			valid_chars(char tile);
+int			valid_tile(char **map, int i, int j);
+int			valid_player(char tile);
+int			map_manager(int fd, char **argv, t_mlx *mlx);
 
 #endif

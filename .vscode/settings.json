@@ -1,5 +1,6 @@
 {
 	"files.associations": {
 		"minishell.h": "c"
-	}
+	},
+	"functionHeaderExtension.headerFilePath": "/nfs/homes/gsapio/Desktop/repos/cub3d/cub3d.h"
 }

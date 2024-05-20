@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_free_matrix.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 17:41:48 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/20 18:27:26 by gsapio           ###   ########.fr       */
+/*   Created: 2024/05/17 16:33:52 by gsapio            #+#    #+#             */
+/*   Updated: 2024/05/17 17:10:14 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int	parse_file(int argc, char **argv, t_mlx *mlx)
+void	ft_free_matrix(void **ptr)
 {
-	int	fd;
+	int	i;
 
-	fd = -2;
-	if (argc != 2)
-		perror("Error");
-	else if (ft_strncmp(ft_strchr(argv[1], '.'), ".cub", 4))
-		perror("Error");
-	else if (!check_elements(fd, argv, mlx))
-		perror("Error");
-	else if (!map_manager(fd, argv, mlx))
-		perror("Error");
-	else
-		return (1);
-	return (0);
+	i = 0;
+	if (ptr == NULL)
+		return ;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free(ptr);
 }
