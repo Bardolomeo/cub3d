@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 20:27:33 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 20:29:18 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/22 21:12:15 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ int	draw_player(t_mlx *mlx)
 
 	mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win, 
 		mlx->pos.x + ox, mlx->pos.y + oy, 0xff0000);
-	if (ox == PLAYER_DIM)
+	if (ox == (PLAYER_DIM / 2) || ox == -(PLAYER_DIM / 2))
 	{
 		oy++;
 		ox = 0;
 	}
-	if (oy == PLAYER_DIM)
+	if (oy == (PLAYER_DIM / 2) || oy == -(PLAYER_DIM / 2))
 		oy = 0;
 	ox++;
 	return (1);
