@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/20 18:28:23 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:00:23 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@
 # define WE 2
 # define EA 3
 
+typedef struct s_v2
+{
+	int		x;
+	int		y;
+}			t_v2;
+
+typedef struct s_f_v2
+{
+	float	fx;
+	float	fy;
+}			t_f_v2;
+
 typedef struct s_image
 {
 	void	*img_ptr;
@@ -38,6 +50,8 @@ typedef struct s_mlx
 	t_image	images[4];
 	int		floor_color;
 	int		ceiling_color;
+	t_v2	pos;
+	t_v2	dir;
 }			t_mlx;
 
 typedef struct s_rgb
@@ -72,5 +86,8 @@ int			valid_chars(char tile);
 int			valid_tile(char **map, int i, int j);
 int			valid_player(char tile);
 int			map_manager(int fd, char **argv, t_mlx *mlx);
+
+// drawing
+void		DDA(t_v2 vec0, t_v2 vec1, t_mlx *mlx);
 
 #endif

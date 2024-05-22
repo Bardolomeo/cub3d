@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:39:57 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/20 16:37:44 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/22 11:42:22 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ void	set_color(char *str, int *color)
 	i = skip_spaces(str);
 	str_color = ft_strtrim(str + i, "\n");
 	rgb_s = ft_split(str_color, ',');
+	i = 0;
+	while (rgb_s[i])
+		i++;
+	if (i < 3)
+	{
+		ft_free_matrix((void **)rgb_s);
+		free(str_color);
+		return ;
+	}
 	*color = create_trgb(0, (unsigned char)ft_atoi(rgb_s[0]),
 			(unsigned char)ft_atoi(rgb_s[1]), (unsigned char)ft_atoi(rgb_s[2]));
 	ft_free_matrix((void **)rgb_s);
@@ -93,7 +102,7 @@ int	get_elements(char *str, t_mlx *mlx)
 // Prende gli elementi e si assicura che siano corretti
 int	check_elements(int fd, char **argv, t_mlx *mlx)
 {
-	char	*temp;
+	char *temp;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
