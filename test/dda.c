@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:38:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 14:07:44 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:27:13 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	ft_round(float x)
 	else
 		return ((int)x);
 }
+
 // DDA Function for line generation 
 void DDA(t_v2 vec0, t_v2 vec1, t_mlx *mlx) 
 { 

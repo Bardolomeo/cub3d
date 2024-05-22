@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 14:00:23 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/22 20:59:26 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@
 # define SO 1
 # define WE 2
 # define EA 3
+# define TILE_DIM 32
+# define PLAYER_DIM 8
+# define VELOCITY 10
 
 typedef struct s_v2
 {
 	int		x;
 	int		y;
+	float	angle;
 }			t_v2;
 
 typedef struct s_f_v2
@@ -46,6 +50,7 @@ typedef struct s_mlx
 {
 	void	*mlx_ptr;
 	void	*mlx_win;
+	char	**fmap;
 	char	**map;
 	t_image	images[4];
 	int		floor_color;
@@ -89,5 +94,11 @@ int			map_manager(int fd, char **argv, t_mlx *mlx);
 
 // drawing
 void		DDA(t_v2 vec0, t_v2 vec1, t_mlx *mlx);
+int			draw_map(t_mlx *mlx);
+int			draw_player(t_mlx *mlx);
+void		draw_tile(int color, int i, int j, t_mlx *mlx);
+t_v2		player_pos(t_mlx *mlx);
+void		find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
+int			enlarge_map(t_mlx *mlx);
 
 #endif
