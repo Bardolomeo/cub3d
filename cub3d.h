@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 20:59:26 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:49:13 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@
 # define WE 2
 # define EA 3
 # define TILE_DIM 32
-# define PLAYER_DIM 8
+# define PLAYER_DIM 4
 # define VELOCITY 10
+# define RADIAN
+# define PI 3.14159265359
 
 typedef struct s_v2
 {
@@ -37,6 +39,7 @@ typedef struct s_f_v2
 {
 	float	fx;
 	float	fy;
+	float	angle;
 }			t_f_v2;
 
 typedef struct s_image
@@ -45,6 +48,13 @@ typedef struct s_image
 	int		i_height;
 	int		i_width;
 }			t_image;
+
+typedef	struct	s_ray_vars
+{
+	int		dof; 
+	t_f_v2	ray;
+	t_f_v2	off;
+}	t_ray_vars;
 
 typedef struct s_mlx
 {
@@ -57,6 +67,7 @@ typedef struct s_mlx
 	int		ceiling_color;
 	t_v2	pos;
 	t_v2	dir;
+	t_ray_vars ray_v;
 }			t_mlx;
 
 typedef struct s_rgb
@@ -79,6 +90,7 @@ int			get_b(int trgb);
 int			destroy_game(t_mlx *mlx);
 int			destroy_game_on_start(t_mlx *mlx);
 int			error_fclose(int *fd);
+void		count_cols_rows(int *i, int *j, char **map);
 
 /* Parsing */
 int			check_all_elements(t_mlx *mlx);
@@ -92,13 +104,21 @@ int			valid_tile(char **map, int i, int j);
 int			valid_player(char tile);
 int			map_manager(int fd, char **argv, t_mlx *mlx);
 
-// drawing
+// graphics
 void		DDA(t_v2 vec0, t_v2 vec1, t_mlx *mlx);
 int			draw_map(t_mlx *mlx);
-int			draw_player(t_mlx *mlx);
+int			draw_player_loop(t_mlx *mlx);
+int			draw_player_iterative(t_mlx *mlx);
 void		draw_tile(int color, int i, int j, t_mlx *mlx);
 t_v2		player_pos(t_mlx *mlx);
 void		find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
-int			enlarge_map(t_mlx *mlx);
+int			casting_rays(t_mlx *mlx);
+
+
+
+//movement
+void		on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
+void		on_rotate(t_mlx *mlx, int keycode);
+void		compute_direction(t_mlx *mlx, float *pdx, float *pdy);
 
 #endif

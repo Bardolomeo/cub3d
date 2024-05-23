@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 20:27:33 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 20:29:18 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:00:22 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ t_v2	player_pos(t_mlx *mlx)
 
 	find_player_in_map(mlx->map, &i, &j, &vector);
 	if (mlx->map[i][j] == 'N')
-		vector.angle = M_PI_2;
+		vector.angle = PI / 2;
 	else if (mlx->map[i][j] == 'W')
 		vector.angle = 0;
 	else if (mlx->map[i][j] == 'E')
-		vector.angle = M_PI;
+		vector.angle = PI;
 	else if (mlx->map[i][j] == 'S')
-		vector.angle = (M_PI * 3) / 4;
+		vector.angle = (PI * 3) / 4;
 	vector.x *= TILE_DIM;
 	vector.y *= TILE_DIM;
 	return (vector);
@@ -66,21 +66,42 @@ void	draw_tile(int color, int i, int j, t_mlx *mlx)
 	}
 }
 
-int	draw_player(t_mlx *mlx)
+int	draw_player_loop(t_mlx *mlx)
 {
-	static int	ox = 0;
-	static int	oy = PLAYER_DIM;
+	static int	ox = -PLAYER_DIM;
+	static int	oy = -PLAYER_DIM;
 
 	mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win, 
 		mlx->pos.x + ox, mlx->pos.y + oy, 0xff0000);
-	if (ox == PLAYER_DIM)
+	if (ox == PLAYER_DIM - 1)
 	{
 		oy++;
-		ox = 0;
+		ox = -PLAYER_DIM;
 	}
-	if (oy == PLAYER_DIM)
+	if (oy == PLAYER_DIM - 1)
 		oy = 0;
 	ox++;
+	return (1);
+}
+
+
+int	draw_player_iterative(t_mlx *mlx)
+{
+	int	ox;
+	int	oy;
+
+	oy = -PLAYER_DIM;
+	while (oy < PLAYER_DIM)
+	{
+		ox = -PLAYER_DIM;
+		while (ox < PLAYER_DIM)
+		{
+			mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win, 
+				mlx->pos.x + ox, mlx->pos.y + oy, 0xff0000);	
+			ox++;
+		}
+		oy++;
+	}
 	return (1);
 }
 
