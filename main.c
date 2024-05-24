@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 21:00:08 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:49:39 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./cub3d.h"
 #include "minilibx-linux/mlx.h"
+
 
 int	handler_func(t_mlx *mlx)
 {
@@ -54,17 +55,19 @@ void	on_game_start(t_mlx *mlx)
 	draw_map(mlx);
 }
 
+
 int	key_down(int keycode, t_mlx *mlx)
 {
-	if (keycode == 'w')
-		mlx->pos.y -= VELOCITY;
-	if (keycode == 'a')
-		mlx->pos.x -= VELOCITY;
-	if (keycode == 's')
-		mlx->pos.y += VELOCITY;
-	if (keycode == 'd')
-		mlx->pos.x += VELOCITY;
+	float pdy;
+	float pdx;
+	
+	pdy = 0.0;
+	pdx = 0.0;
+	on_rotate(mlx, keycode);
+	compute_direction(mlx, &pdx, &pdy);
+	on_move(mlx, keycode, pdy, pdx);
 	draw_map(mlx);
+	draw_player_iterative(mlx);
 	return (0);
 }
 
@@ -82,7 +85,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);
 	mlx_hook(mlx.mlx_win, 2, (1L<<0), key_down, &mlx);
 	printf("%d\n", mlx.pos.x);
-	mlx_loop_hook(mlx.mlx_ptr, draw_player, &mlx);
+	mlx_loop_hook(mlx.mlx_ptr, casting_rays, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	destroy_game(&mlx);
 	return (0);
