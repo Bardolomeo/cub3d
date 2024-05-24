@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 20:27:33 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/24 14:00:34 by gsapio           ###   ########.fr       */
+/*   Created: 2024/05/24 15:08:27 by gsapio            #+#    #+#             */
+/*   Updated: 2024/05/24 17:18:56 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ t_v2	player_pos(t_mlx *mlx)
 
 	find_player_in_map(mlx->map, &i, &j, &vector);
 	if (mlx->map[i][j] == 'N')
-		vector.angle = PI / 2;
+		vector.angle = PI_2;
 	else if (mlx->map[i][j] == 'W')
 		vector.angle = 0;
 	else if (mlx->map[i][j] == 'E')
 		vector.angle = PI;
 	else if (mlx->map[i][j] == 'S')
-		vector.angle = (PI * 3) / 4;
+		vector.angle = PI_3;
 	vector.x *= TILE_DIM;
 	vector.y *= TILE_DIM;
 	return (vector);
@@ -53,10 +53,10 @@ void	draw_tile(int color, int i, int j, t_mlx *mlx)
 	int	oi = 0;
 	int	oj = 0;
 	
-	while (oi < TILE_DIM)
+	while (oi < TILE_DIM - 1)
 	{
 		oj = 0;
-		while (oj < TILE_DIM)
+		while (oj < TILE_DIM - 1)
 		{
 			mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win,
 						j*TILE_DIM + oj, i*TILE_DIM + oi, color);
@@ -73,12 +73,12 @@ int	draw_player_loop(t_mlx *mlx)
 
 	mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win, 
 		mlx->pos.x + ox, mlx->pos.y + oy, 0xff0000);
-	if (ox == PLAYER_DIM)
+	if (ox == (PLAYER_DIM / 2) || ox == -(PLAYER_DIM / 2))
 	{
 		oy++;
 		ox = -PLAYER_DIM;
 	}
-	if (oy == PLAYER_DIM)
+	if (oy == (PLAYER_DIM / 2) || oy == -(PLAYER_DIM / 2))
 		oy = 0;
 	ox++;
 	return (1);
