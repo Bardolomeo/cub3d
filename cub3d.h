@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/24 18:54:14 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:23:03 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
+# include <float.h>
 # define NO 0
 # define SO 1
 # define WE 2
@@ -118,6 +119,8 @@ void			draw_tile(int color, int i, int j, t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 int				casting_rays_horizontal(t_mlx *mlx);
+void			set_ray_coordinates_v(t_mlx *mlx, float nTan, float pi_2, float pi_3);
+void			set_v_ray(t_mlx *mlx);
 int				casting_rays(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
 
@@ -125,5 +128,8 @@ float			dist(t_v2 player, t_f_v2 ray);
 void			on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
 void			on_rotate(t_mlx *mlx, int keycode);
 void			compute_direction(t_mlx *mlx, float *pdx, float *pdy);
+
+
+/* FUNCTIONS */
 
 #endif

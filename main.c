@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/24 16:40:05 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/27 19:35:52 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int argc, char **argv)
 	init_elements(&mlx);
 	if (!parse_file(argc, argv, &mlx))
 		return (0);
-	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, 1028, 720, "Vermin");
+	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, 1920, 1080, "Vermin");
 	on_game_start(&mlx);
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);

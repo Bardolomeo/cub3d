@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:52:43 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/23 15:35:51 by bard             ###   ########.fr       */
+/*   Updated: 2024/05/27 15:53:56 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,23 @@ int	valid_player(char tile)
 
 void	count_cols_rows(int *i, int *j, char **map)
 {
+	int	max_i;
+	int	max_j;
+
 	*i = -1;
+	max_i = 0;
+	max_j = 0;
 	while (map[++(*i)])
 	{
+		if (*i > max_i)
+			max_i = *i;
 		*j = 0;
 		while (map[*i][*j])
 			(*j)++;
+		if (*j > max_j)
+			max_j = *j;
 	}
+	*i = max_i;
+	*j = max_j;
 	return ;
 }

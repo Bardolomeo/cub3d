@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:27:38 by bard              #+#    #+#             */
-/*   Updated: 2024/05/24 17:37:57 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:55:04 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	compute_direction(t_mlx *mlx, float *pdx, float *pdy)
 {
 	*pdy = sin(mlx->pos.angle) * 5;
 	*pdx = cos(mlx->pos.angle) * 5;
-	if (mlx->pos.angle == (float)(PI / 2) || mlx->pos.angle == (float)(PI / 4 * 3))
+	if (mlx->pos.angle == (float)(PI / 2) || mlx->pos.angle == (float)(PI / 2 * 3))
 		*pdx = 0;
 	if (mlx->pos.angle == (float)(PI) || mlx->pos.angle == 0)
 		*pdy = 0;
