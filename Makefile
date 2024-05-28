@@ -6,7 +6,7 @@
 #    By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/05/24 18:39:02 by gsapio           ###   ########.fr        #
+#    Updated: 2024/05/28 17:53:33 by gsapio           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRCS_MANDATORY	=	main.c \
 					parsing/parsing.c parsing/bit_colors.c parsing/parse_elements.c \
 					utils/clean_game_closure.c utils/parsing_utils.c parsing/parse_map.c utils/drawing.c utils/raycasting_utils.c\
 					game/movement.c \
-					graphics/ray_casting.c graphics/dda.c
+					graphics/ray_casting.c graphics/dda.c graphics/ray_vertical.c graphics/ray_horizontal.c
 
 LFLAGS = -lft -L./Libft -lmlx -Lminilibx-linux -lX11 -lXext -lm -no-pie
 

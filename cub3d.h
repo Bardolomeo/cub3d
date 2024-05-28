@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/27 20:23:03 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/28 18:12:30 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include "./minilibx-linux/mlx.h"
 # include "Libft/libft.h"
 # include <fcntl.h>
+# include <float.h>
 # include <math.h>
 # include <stdio.h>
-# include <float.h>
 # define NO 0
 # define SO 1
 # define WE 2
@@ -74,6 +74,7 @@ typedef struct s_mlx
 	t_ray_vars	ray_h;
 	float		dist_h;
 	float		dist_v;
+	float		dist_t;
 }				t_mlx;
 
 typedef struct s_rgb
@@ -118,18 +119,24 @@ int				draw_player_iterative(t_mlx *mlx);
 void			draw_tile(int color, int i, int j, t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
-int				casting_rays_horizontal(t_mlx *mlx);
-void			set_ray_coordinates_v(t_mlx *mlx, float nTan, float pi_2, float pi_3);
-void			set_v_ray(t_mlx *mlx);
-int				casting_rays(t_mlx *mlx);
-float			dist(t_v2 player, t_f_v2 ray);
 
 // movement
 void			on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
 void			on_rotate(t_mlx *mlx, int keycode);
 void			compute_direction(t_mlx *mlx, float *pdx, float *pdy);
 
-
-/* FUNCTIONS */
+/* Ray Casting*/
+int				casting_rays_horizontal(t_mlx *mlx);
+void			casting_rays(int *count, t_mlx *mlx, double *dgr_range);
+int				casting_rays_vertical(t_mlx *mlx);
+void			set_ray_coordinates_v(t_mlx *mlx, float nTan, float pi_2,
+					float pi_3);
+void			set_v_ray(t_mlx *mlx);
+int				float_comp(float first, float second);
+void			set_ray_coordinates_h(t_mlx *mlx, float coTan);
+void			set_h_ray(t_mlx *mlx);
+void			casting_rays(int *count, t_mlx *mlx, double *dgr_range);
+int				draw_walls(t_mlx *mlx);
+float			dist(t_v2 player, t_f_v2 ray);
 
 #endif

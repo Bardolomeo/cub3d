@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:08:27 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/27 20:13:51 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/28 17:24:08 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ t_v2	player_pos(t_mlx *mlx)
 
 	find_player_in_map(mlx->map, &i, &j, &vector);
 	if (mlx->map[i][j] == 'N')
-		vector.angle = PI_2;
+		vector.angle = PI_3;
 	else if (mlx->map[i][j] == 'W')
 		vector.angle = 0;
 	else if (mlx->map[i][j] == 'E')
 		vector.angle = PI;
 	else if (mlx->map[i][j] == 'S')
-		vector.angle = PI_3;
-	vector.x *= TILE_DIM;
-	vector.y *= TILE_DIM;
+		vector.angle = PI_2;
+	vector.x = vector.x * TILE_DIM + TILE_DIM / 2;
+	vector.y = vector.y * TILE_DIM + TILE_DIM / 2;
 	return (vector);
 }
 

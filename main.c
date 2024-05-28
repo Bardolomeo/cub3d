@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/27 19:35:52 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/28 18:52:05 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);
 	mlx_hook(mlx.mlx_win, 2, (1L<<0), key_down, &mlx);
-	mlx_loop_hook(mlx.mlx_ptr, casting_rays, &mlx);
+	mlx_loop_hook(mlx.mlx_ptr, draw_walls, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	destroy_game(&mlx);
 	return (0);
