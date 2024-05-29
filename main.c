@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/28 18:52:05 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/29 18:40:40 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,18 @@ void	init_elements(t_mlx *mlx)
 		mlx->images[i].img_ptr = NULL;
 		i++;
 	}
+	mlx->ceil_floor.img_ptr = NULL;
+	mlx->walls.img_ptr = NULL;
 	mlx->pos.x = 0;
 	mlx->pos.y = 0;
 	mlx->dir.x = 16;
 	mlx->dir.y = 16;
+	mlx->keys.w = 0;
+	mlx->keys.n = 0;
+	mlx->keys.s = 0;
+	mlx->keys.e = 0;
+	mlx->keys.f = 0;
+	mlx->keys.c = 0;
 }
 
 
@@ -52,6 +60,8 @@ void	on_game_start(t_mlx *mlx)
 	mlx->pos.x = player_pos(mlx).x;
 	mlx->pos.y = player_pos(mlx).y;
 	mlx->pos.angle = player_pos(mlx).angle;
+	draw_ceiling_floor(mlx);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0, 0);
 	draw_map(mlx);
 }
 
@@ -68,6 +78,7 @@ int	key_down(int keycode, t_mlx *mlx)
 	on_move(mlx, keycode, pdy, pdx);
 	draw_map(mlx);
 	draw_player_iterative(mlx);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0, 0);
 	return (0);
 }
 
@@ -79,7 +90,7 @@ int	main(int argc, char **argv)
 	init_elements(&mlx);
 	if (!parse_file(argc, argv, &mlx))
 		return (0);
-	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, 1920, 1080, "Vermin");
+	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, 960, 540, "Vermin");
 	on_game_start(&mlx);
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);

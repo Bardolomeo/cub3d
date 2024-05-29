@@ -6,7 +6,7 @@
 #    By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/05/28 17:53:33 by gsapio           ###   ########.fr        #
+#    Updated: 2024/05/29 14:57:29 by gsapio           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,6 @@ OBJS_MANDATORY	= $(SRCS_MANDATORY:.c=.o)
 
 # BONUS			=
 
-OBJS_BONUS		= $(BONUS:.c=.o)
-
 CC				= gcc -g
 
 RM				= rm -f
@@ -50,31 +48,26 @@ NAME			= cub3D
 
 all:			$(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -I $(HEADER) -c $< -o $@
-
-$(NAME):		$(MLX_DIR) $(OBJS_MANDATORY)
+$(NAME):		$(MLX_DIR) $(SRCS_MANDATORY)
 				make -C $(LIBFT_PATH) --no-print-directory
 				make bonus -C $(LIBFT_PATH) --no-print-directory
 				make -C $(MLX_PATH) --no-print-directory
-				$(CC) $(CFLAGS) $(OBJS_MANDATORY) $(LFLAGS) $(IFLAGS) -o $(NAME)
+				$(CC) $(CFLAGS) $(SRCS_MANDATORY) $(LFLAGS) $(IFLAGS) -o $(NAME)
 
 $(MLX_DIR):
 				@git clone $(MLX)
 				@cd $(MLX_DIR) && ./configure
 
-Bonus/%.o: 		Bonus/%.c
-				$(CC) $(CFLAGS) -I /Bonus -c $< -o $@
 
-$(BONUS_NAME):	$(OBJS_BONUS)
+$(BONUS_NAME):	$(SRCS_BONUS)
 				make -C $(LIBFT_PATH) --no-print-directory
 				make -C $(MLX_PATH) --no-print-directory
-				$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(BONUS_NAME) Bonus/so_long_bonus.c $(PATH_LIBS) $(LFLAGS)
+				$(CC) $(CFLAGS) $(SRCS_BONUS) -o $(BONUS_NAME) Bonus/so_long_bonus.c $(PATH_LIBS) $(LFLAGS)
 
 bonus:			$(BONUS_NAME)
 
 clean:
-				$(RM) $(OBJS_MANDATORY) $(OBJS_BONUS)
+				$(RM)
 
 fclean:			clean
 				$(RM) $(NAME)
@@ -85,6 +78,6 @@ fclean:			clean
 				$(RM) $(MLX_PATH)/*.o
 				$(RM) $(MLX_PATH)/*.a
 
-re:				fclean call_mlx $(NAME)
+re:				fclean $(NAME)
 
 .PHONY:			all clean fclean re bonus

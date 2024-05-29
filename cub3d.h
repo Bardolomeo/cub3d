@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/28 18:12:30 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/29 18:53:53 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,15 @@
 # define SO 1
 # define WE 2
 # define EA 3
-# define TILE_DIM 32
+# define TILE_DIM 8
 # define PLAYER_DIM 2
 # define VELOCITY 10
 # define PI 3.14159265359
 # define PI_2 PI / 2
 # define PI_3 3 * PI / 2
 # define DGR 0.0174533
+# define VIEWPORT_W 960
+# define VIEWPORT_H 540
 
 typedef struct s_v2
 {
@@ -50,6 +52,9 @@ typedef struct s_image
 	void		*img_ptr;
 	int			i_height;
 	int			i_width;
+	int			pixel_bits;
+	int			line_bytes;
+	int			endian;
 }				t_image;
 
 typedef struct s_ray_vars
@@ -59,11 +64,20 @@ typedef struct s_ray_vars
 	t_f_v2		off;
 }				t_ray_vars;
 
+typedef struct s_keycub
+{
+	int			w;
+	int			n;
+	int			s;
+	int			e;
+	int			f;
+	int			c;
+}				t_keycub;
+
 typedef struct s_mlx
 {
 	void		*mlx_ptr;
 	void		*mlx_win;
-	char		**fmap;
 	char		**map;
 	t_image		images[4];
 	int			floor_color;
@@ -75,6 +89,12 @@ typedef struct s_mlx
 	float		dist_h;
 	float		dist_v;
 	float		dist_t;
+	float		prev_dist_v;
+	float		prev_dist_h;
+	float		limit_dof;
+	t_image		ceil_floor;
+	t_image		walls;
+	t_keycub	keys;
 }				t_mlx;
 
 typedef struct s_rgb
@@ -117,6 +137,7 @@ int				draw_map(t_mlx *mlx);
 int				draw_player_loop(t_mlx *mlx);
 int				draw_player_iterative(t_mlx *mlx);
 void			draw_tile(int color, int i, int j, t_mlx *mlx);
+void			draw_ceiling_floor(t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 
@@ -127,7 +148,7 @@ void			compute_direction(t_mlx *mlx, float *pdx, float *pdy);
 
 /* Ray Casting*/
 int				casting_rays_horizontal(t_mlx *mlx);
-void			casting_rays(int *count, t_mlx *mlx, double *dgr_range);
+void			casting_rays(int *count, t_mlx *mlx);
 int				casting_rays_vertical(t_mlx *mlx);
 void			set_ray_coordinates_v(t_mlx *mlx, float nTan, float pi_2,
 					float pi_3);
@@ -135,8 +156,11 @@ void			set_v_ray(t_mlx *mlx);
 int				float_comp(float first, float second);
 void			set_ray_coordinates_h(t_mlx *mlx, float coTan);
 void			set_h_ray(t_mlx *mlx);
-void			casting_rays(int *count, t_mlx *mlx, double *dgr_range);
 int				draw_walls(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
+
+/* FUNCTIONS */
+int				get_positioning(int i, t_mlx *mlx, char *str);
+float			dist_int(t_v2 player, t_v2 ray);
 
 #endif

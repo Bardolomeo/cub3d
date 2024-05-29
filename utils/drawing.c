@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:08:27 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/28 17:24:08 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/29 17:05:56 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ int	draw_map(t_mlx *mlx)
 		while (mlx->map[i][++j])
 		{
 			if (mlx->map[i][j] == '1')
-				draw_tile(0x00ff00, i, j, mlx);
+				draw_tile(0xffffff, i, j, mlx);
 			if (mlx->map[i][j] == '0' || valid_player(mlx->map[i][j]))
-				draw_tile(0x0000ff, i, j, mlx);
+				draw_tile(0x000000, i, j, mlx);
 		}
 	}
 	return (0);

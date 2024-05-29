@@ -6,33 +6,62 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:27:38 by bard              #+#    #+#             */
-/*   Updated: 2024/05/28 17:39:46 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/29 19:05:50 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	on_move(t_mlx *mlx, int keycode, float pdy, float pdx)
+
+void	move_up(t_mlx *mlx, int keycode, float pdy, float pdx)
 {
+	int	xo;
+	int	yo;
+
 	if (keycode == 'w')
 	{
-		mlx->pos.y += round(pdy);
-		mlx->pos.x += round(pdx);
+		if (pdy > 0)
+			yo = 2;
+		else
+			yo = -2;
+		if (pdx > 0)
+			xo = 2;
+		else
+			xo = -2;
+		if (mlx->map[(int)(mlx->pos.y + round(pdy) + yo) >> 3][(int)(mlx->pos.x + round(pdx) + xo) >> 3] != '1')
+		{
+			mlx->pos.y += round(pdy);
+			mlx->pos.x += round(pdx);
+		}
 	}
+}
+
+void	on_move(t_mlx *mlx, int keycode, float pdy, float pdx)
+{
+	move_up(mlx, keycode, pdy, pdx);
 	if (keycode == 'a')
 	{
-		mlx->pos.y -= round(pdx);
-		mlx->pos.x += round(pdy);
+		if (mlx->map[(int)(mlx->pos.y - round(pdx)) >> 3][(int)(mlx->pos.x + round(pdy)) >> 3] != '1')
+		{
+			mlx->pos.y -= round(pdx);
+			mlx->pos.x += round(pdy);
+		}
 	}
 	if (keycode == 's')
 	{
-		mlx->pos.y -= round(pdy);
-		mlx->pos.x -= round(pdx);
+		if (mlx->map[(int)(mlx->pos.y - round(pdy)) >> 3][(int)(mlx->pos.x - round(pdx)) >> 3] != '1')
+		{
+			mlx->pos.y -= round(pdy);
+			mlx->pos.x -= round(pdx);
+		}
 	}
 	if (keycode == 'd')
 	{
-		mlx->pos.y += round(pdx);
-		mlx->pos.x -= round(pdy);
+		if (mlx->map[(int)(mlx->pos.y + round(pdx)) >> 3][(int)(mlx->pos.x - round(pdy)) >> 3] != '1')
+		{
+			mlx->pos.y += round(pdx);
+			mlx->pos.x -= round(pdy);
+		}
 	}	
 }
 

@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:39:57 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 11:42:22 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/29 18:54:43 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,18 @@ int	get_elements(char *str, t_mlx *mlx)
 	int	i;
 
 	i = skip_spaces(str);
-	if (ft_strncmp(str + i, "NO ", 3) == 0)
-		set_image(str + i + 3, &mlx->images[NO], mlx);
-	else if (ft_strncmp(str + i, "SO ", 3) == 0)
-		set_image(str + i + 3, &mlx->images[SO], mlx);
-	else if (ft_strncmp(str + i, "WE ", 3) == 0)
-		set_image(str + i + 3, &mlx->images[WE], mlx);
-	else if (ft_strncmp(str + i, "EA ", 3) == 0)
-		set_image(str + i + 3, &mlx->images[EA], mlx);
-	else if (ft_strncmp(str + i, "F ", 2) == 0)
+	if (get_positioning(i, mlx, str))
+		return (1);
+	else if (ft_strncmp(str + i, "F ", 2) == 0 && mlx->keys.f == 0)
+	{
 		set_color(str + i + 2, &mlx->floor_color);
-	else if (ft_strncmp(str + i, "C ", 2) == 0)
+		mlx->keys.f = 1;
+	}
+	else if (ft_strncmp(str + i, "C ", 2) == 0 && mlx->keys.c == 0)
+	{
 		set_color(str + i + 2, &mlx->ceiling_color);
+		mlx->keys.c = 1;
+	}
 	else if (*(str + i) == '\n' || *(str + i) == '1')
 		return (1);
 	else
@@ -113,7 +113,10 @@ int	check_elements(int fd, char **argv, t_mlx *mlx)
 	while (temp != NULL)
 	{
 		if (!get_elements(temp, mlx))
+		{
 			error_fclose(&fd);
+			return (0);
+		}
 		free(temp);
 		temp = get_next_line(fd);
 	}

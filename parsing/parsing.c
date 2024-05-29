@@ -6,12 +6,39 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:41:48 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/22 18:30:23 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/29 19:04:22 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 #include <fcntl.h>
+
+int	get_positioning(int i, t_mlx *mlx, char *str)
+{
+	if (ft_strncmp(str + i, "NO ", 3) == 0 && mlx->keys.n == 0)
+	{
+		set_image(str + i + 3, &mlx->images[NO], mlx);
+		mlx->keys.n = 1;
+	}
+	else if (ft_strncmp(str + i, "SO ", 3) == 0 && mlx->keys.s == 0)
+	{
+		set_image(str + i + 3, &mlx->images[SO], mlx);
+		mlx->keys.s = 1;
+	}
+	else if (ft_strncmp(str + i, "WE ", 3) == 0 && mlx->keys.w == 0)
+	{
+		set_image(str + i + 3, &mlx->images[WE], mlx);
+		mlx->keys.w = 1;
+	}
+	else if (ft_strncmp(str + i, "EA ", 3) == 0 && mlx->keys.e == 0)
+	{
+		set_image(str + i + 3, &mlx->images[EA], mlx);
+		mlx->keys.e = 1;
+	}
+	else
+		return (0);
+	return (1);	
+}
 
 int	parse_file(int argc, char **argv, t_mlx *mlx)
 {
