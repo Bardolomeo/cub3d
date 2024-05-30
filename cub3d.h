@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 18:53:53 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/30 12:29:36 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_image
 	int			pixel_bits;
 	int			line_bytes;
 	int			endian;
+	char		*buffer;
 }				t_image;
 
 typedef struct s_ray_vars
@@ -94,6 +95,7 @@ typedef struct s_mlx
 	float		limit_dof;
 	t_image		ceil_floor;
 	t_image		walls;
+	t_image		walls_image;
 	t_keycub	keys;
 }				t_mlx;
 
