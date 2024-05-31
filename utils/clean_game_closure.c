@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:49 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 17:57:56 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/31 17:33:55 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	destroy_game(t_mlx *mlx)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->images[i].img_ptr);
 	ft_free_matrix((void **)mlx->map);
 	// mlx_destroy_image(mlx->mlx_ptr, mlx->walls.img_ptr);
-	mlx_destroy_image(mlx->mlx_ptr, mlx->ceil_floor.img_ptr);
 	mlx_destroy_display(mlx->mlx_ptr);
 	free(mlx->mlx_ptr);
 	return (0);

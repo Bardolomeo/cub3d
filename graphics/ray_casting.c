@@ -6,13 +6,14 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:03:38 by bard              #+#    #+#             */
-/*   Updated: 2024/05/30 14:14:03 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/31 17:48:21 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 #include <math.h>
 
+int	conta = 0;
 
 void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
 {
@@ -31,6 +32,7 @@ void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
 	    buffer[pixel + 2] = (color >> 16) & 0xFF;
 	    buffer[pixel + 3] = (color >> 24);
 	}
+
 }
 
 void	draw_ceiling_floor(t_mlx *mlx)
@@ -93,29 +95,45 @@ int get_pixel(t_mlx *mlx, int px, int py)
 	return (c);
 } 
 
+void	make_walls_image(t_mlx *mlx, int k, int i, int count)
+{
+	int	ind;
+
+	ind = (k + count *16) * 4 + 4 * (mlx->walls.line_bytes / 4) * i;
+	if (mlx->dist_t == mlx->dist_v)
+		mlx->walls_image.buffer[ind + 2] = (unsigned char)255;
+	if (mlx->dist_t == mlx->dist_h)
+		mlx->walls_image.buffer[ind + 2] = (unsigned char)155;
+	mlx->walls_image.buffer[ind] = 0;
+	mlx->walls_image.buffer[ind + 1] = 0;
+	mlx->walls_image.buffer[ind + 3] = 0;
+}
+
 void	draw_single_wall(t_mlx *mlx, float line_h, float line_o, int count)
 {
-	int i = -1;
-	int j = -1;
+	int i;
+	// int j;
 	int	ty;
 	int	ty_step;
-	int	c;
+	// int	c;
+	int	k;
 
 	ty_step = (mlx->walls.line_bytes/4) / line_h;
 	ty = 0;
 	if (line_h > VIEWPORT_H)
 		line_h = VIEWPORT_H;
 	line_o = (VIEWPORT_H / 2) - line_h / 2;
-	i = line_o;
-	while (++i < line_o + line_h)
+	k = 0;
+	while (++k < 17)
 	{
-		j = -1;
-		while (++j < 16)
+		i = line_o;
+		while (++i < line_o + line_h)
 		{
-			c = get_pixel(mlx, (int)(j), (int)(ty));
-			mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win, j + (count * 16), i, c);
+			// j = -1;
+			// 	c = get_pixel(mlx, (int)(j), (int)(ty));
+			make_walls_image(mlx, k, i, count);
+			ty += ty_step;
 		}
-		ty += ty_step;
 	}
 }
 
@@ -128,7 +146,7 @@ void	draw_lines(t_mlx *mlx, int count, int color)
 
 	(void)count;
 	count_cols_rows(&i, &j, mlx->map);
-	line.y = (TILE_DIM)*VIEWPORT_H / mlx->dist_t;
+	line.y = (TILE_DIM)*VIEWPORT_H*1.5 / mlx->dist_t;
 	line_o = 0; 
 	(void)(color);
 	put_walls_texture(mlx);
@@ -181,18 +199,21 @@ int	draw_walls(t_mlx *mlx)
 		mlx->pos.angle -= 2 * PI;
 	casting_rays(&count, mlx);
 	check_distance(mlx, &int_ray, &color);
-	diff_a = mlx->pos.angle - mlx->ray_v.ray.angle;
+	diff_a = mlx->ray_v.ray.angle - (mlx->pos.angle + DGR * 30);
 	if (diff_a < 0)
 		diff_a += 2 * PI;
 	if (diff_a > 2 * PI)
 		diff_a -= 2 * PI;
-	mlx->dist_t *= cos(diff_a) + 0.3;
-	mlx->dist_h *= cos(diff_a) + 0.3;
-	mlx->dist_v *= cos(diff_a) + 0.3;
+	mlx->dist_t *= cos(diff_a);
+	mlx->dist_h *= cos(diff_a);
+	mlx->dist_v *= cos(diff_a);
 	put_walls_texture(mlx);
-	draw_lines(mlx, count, color);
+	// draw_lines(mlx, count, color);
 	draw_map(mlx);
 	DDA(mlx->pos, int_ray, 0x00ffff, mlx);
 	mlx->pos.angle += DGR * 30;
+	draw_ceiling_floor(mlx);
+	printf("%d\n\n", conta);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->walls_image.img_ptr, 0, 0);
 	return (1);
 }

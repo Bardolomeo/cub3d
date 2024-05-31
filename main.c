@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 18:40:40 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/05/31 17:45:04 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,13 @@ void	on_game_start(t_mlx *mlx)
 	mlx->pos.x = player_pos(mlx).x;
 	mlx->pos.y = player_pos(mlx).y;
 	mlx->pos.angle = player_pos(mlx).angle;
+	mlx->walls_image.img_ptr = mlx_new_image(mlx->mlx_ptr, VIEWPORT_W,
+			VIEWPORT_H);
+	mlx->walls_image.buffer = mlx_get_data_addr(mlx->walls_image.img_ptr,
+			&mlx->walls_image.pixel_bits, &mlx->walls_image.line_bytes,
+			&mlx->walls_image.endian);
 	draw_ceiling_floor(mlx);
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0, 0);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->walls_image.img_ptr, 0, 0);
 	draw_map(mlx);
 }
 
@@ -78,7 +83,7 @@ int	key_down(int keycode, t_mlx *mlx)
 	on_move(mlx, keycode, pdy, pdx);
 	draw_map(mlx);
 	draw_player_iterative(mlx);
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0, 0);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->walls_image.img_ptr, 0, 0);
 	return (0);
 }
 
