@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/03 16:24:27 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/03 20:31:16 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,10 @@ int	key_down(int keycode, t_mlx *mlx)
 	on_move(mlx, keycode, pdy, pdx);
 	draw_player_iterative(mlx);
 	draw_walls(mlx);
+	char *buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr,
+			&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes,
+			&mlx->ceil_floor.endian);
+	(void)buffer;
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0,0);
 	return (0);
 }
@@ -93,7 +97,7 @@ int	main(int argc, char **argv)
 	init_elements(&mlx);
 	if (!parse_file(argc, argv, &mlx))
 		return (0);
-	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, 960, 540, "Vermin");
+	mlx.mlx_win = mlx_new_window(mlx.mlx_ptr, VIEWPORT_W, VIEWPORT_H, "Vermin");
 	on_game_start(&mlx);
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);

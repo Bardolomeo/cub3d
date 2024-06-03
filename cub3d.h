@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/01 13:42:36 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/03 18:07:33 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define PI_2 PI / 2
 # define PI_3 3 * PI / 2
 # define DGR 0.0174533
-# define VIEWPORT_W 960
-# define VIEWPORT_H 540
+# define VIEWPORT_W 1080
+# define VIEWPORT_H 720
 
 typedef struct s_v2
 {
@@ -75,6 +75,16 @@ typedef struct s_keycub
 	int			f;
 	int			c;
 }				t_keycub;
+
+typedef  struct  s_line
+{
+	int  x; //the x coordinate of line relative to screen
+	int  y; //the current pixel index of the line (along y axis)
+	int  y0; //y start index of drawing texture
+	int  y1; //y end index of drawing texture
+	int  tex_x; //x coordinate of texture to draw
+	int  tex_y; //y coordinate of texture to draw
+} t_line;
 
 typedef struct s_mlx
 {
