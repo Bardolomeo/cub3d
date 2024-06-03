@@ -6,7 +6,7 @@
 #    By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/05/29 14:57:29 by gsapio           ###   ########.fr        #
+#    Updated: 2024/06/03 16:29:26 by gsapio           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,11 @@ NAME			= cub3D
 # BONUS_NAME		=
 
 all:			$(NAME)
+
+call_mlx:
+				echo "$(GREEN)Cloning 'mlx' via HTTP into './mlx'...$(DEF_COLOR)"; \
+				git clone https://github.com/42Paris/minilibx-linux minilibx-linux;
+
 
 $(NAME):		$(MLX_DIR) $(SRCS_MANDATORY)
 				make -C $(LIBFT_PATH) --no-print-directory
