@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:08:27 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 17:05:56 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/01 12:15:50 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ int	draw_map(t_mlx *mlx)
 				draw_tile(0x000000, i, j, mlx);
 		}
 	}
+	draw_player_iterative(mlx);
 	return (0);
 }

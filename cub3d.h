@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/30 12:29:36 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/01 13:42:36 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 # define SO 1
 # define WE 2
 # define EA 3
+# define TEXTURE_DIM 64
 # define TILE_DIM 8
 # define PLAYER_DIM 2
-# define VELOCITY 10
+# define VELOCITY 8
 # define PI 3.14159265359
 # define PI_2 PI / 2
 # define PI_3 3 * PI / 2
@@ -97,6 +98,7 @@ typedef struct s_mlx
 	t_image		walls;
 	t_image		walls_image;
 	t_keycub	keys;
+	t_v2		int_ray;
 }				t_mlx;
 
 typedef struct s_rgb
@@ -142,6 +144,7 @@ void			draw_tile(int color, int i, int j, t_mlx *mlx);
 void			draw_ceiling_floor(t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
+void			empty_buffer(t_mlx *mlx);
 
 // movement
 void			on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
@@ -164,5 +167,6 @@ float			dist(t_v2 player, t_f_v2 ray);
 /* FUNCTIONS */
 int				get_positioning(int i, t_mlx *mlx, char *str);
 float			dist_int(t_v2 player, t_v2 ray);
+int				draw_minimap(t_mlx *mlx);
 
 #endif
