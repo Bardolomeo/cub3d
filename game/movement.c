@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:27:38 by bard              #+#    #+#             */
-/*   Updated: 2024/06/01 13:38:34 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/04 08:09:19 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	move_up(t_mlx *mlx, int keycode, float pdy, float pdx)
 		// 	xo = 2;
 		// else
 		// 	xo = -2;
-		if (mlx->map[(int)(mlx->pos.y + round(pdy) * 1.5) >> 3][(int)(mlx->pos.x + round(pdx) * 1.3) >> 3] != '1')
+		if (mlx->map[(int)(mlx->pos.y + round(pdy) * 1.3) >> (int)log2(TILE_DIM)][(int)(mlx->pos.x + round(pdx) * 1.3) >> (int)log2(TILE_DIM)] != '1')
 		{
 			mlx->pos.y += round(pdy);
 			mlx->pos.x += round(pdx);
@@ -43,7 +43,7 @@ void	move_down(t_mlx *mlx, int keycode, float pdy, float pdx)
 
 	if (keycode == 's')
 	{
-		if (mlx->map[(int)(mlx->pos.y - round(pdy) * 1.3) >> 3][(int)(mlx->pos.x - round(pdx) * 1.3) >> 3] != '1')
+		if (mlx->map[(int)(mlx->pos.y - round(pdy) * 1.3) >> (int)log2(TILE_DIM)][(int)(mlx->pos.x - round(pdx) * 1.3) >> (int)log2(TILE_DIM)] != '1')
 		{
 			mlx->pos.y -= round(pdy);
 			mlx->pos.x -= round(pdx);
@@ -57,7 +57,7 @@ void	on_move(t_mlx *mlx, int keycode, float pdy, float pdx)
 	move_down(mlx, keycode, pdy, pdx);
 	if (keycode == 'a')
 	{
-		if (mlx->map[(int)(mlx->pos.y - round(pdx) * 1.3) >> 3][(int)(mlx->pos.x + round(pdy) * 1.3) >> 3] != '1')
+		if (mlx->map[(int)(mlx->pos.y - round(pdx) * 1.3) >> (int)log2(TILE_DIM)][(int)(mlx->pos.x + round(pdy) * 1.3) >> (int)log2(TILE_DIM)] != '1')
 		{
 			mlx->pos.y -= round(pdx);
 			mlx->pos.x += round(pdy);
@@ -65,7 +65,7 @@ void	on_move(t_mlx *mlx, int keycode, float pdy, float pdx)
 	}
 	if (keycode == 'd')
 	{
-		if (mlx->map[(int)(mlx->pos.y + round(pdx) * 1.3) >> 3][(int)(mlx->pos.x - round(pdy) * 1.3) >> 3] != '1')
+		if (mlx->map[(int)(mlx->pos.y + round(pdx) * 1.3) >> (int)log2(TILE_DIM)][(int)(mlx->pos.x - round(pdy) * 1.3) >> (int)log2(TILE_DIM)] != '1')
 		{
 			mlx->pos.y += round(pdx);
 			mlx->pos.x -= round(pdy);

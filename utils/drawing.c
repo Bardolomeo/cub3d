@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:08:27 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/01 12:15:50 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/04 08:35:48 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,21 @@ t_v2	player_pos(t_mlx *mlx)
 
 void	draw_tile(int color, int i, int j, t_mlx *mlx)
 {
-	int	oi = 0;
-	int	oj = 0;
+	int		oi = 0;
+	int		oj = 0;
+	char	*buffer;
+	int		yx[2];
 	
-	while (oi < TILE_DIM - 1)
+	buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr, &mlx->ceil_floor.pixel_bits,
+				&mlx->ceil_floor.line_bytes, &mlx->ceil_floor.endian);
+	while (oi < mlx->images[wall_index(mlx)].i_height / 8 - 1)
 	{
 		oj = 0;
-		while (oj < TILE_DIM - 1)
+		while (oj < mlx->images[wall_index(mlx)].i_height / 8 - 1)
 		{
-			mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win,
-						j*TILE_DIM + oj, i*TILE_DIM + oi, color);
+			yx[0] = i * mlx->images[wall_index(mlx)].i_height / 8 + oi;
+			yx[1] = j * mlx->images[wall_index(mlx)].i_height / 8 + oj;
+			put_color_to_pixel(yx, buffer, color, mlx);
 			oj++;
 		}
 		oi++;
@@ -87,17 +92,22 @@ int	draw_player_loop(t_mlx *mlx)
 
 int	draw_player_iterative(t_mlx *mlx)
 {
-	int	ox;
-	int	oy;
+	int		ox;
+	int		oy;
+	int 	yx[2];
+	char	*buffer;
 
 	oy = -PLAYER_DIM;
+	buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr, &mlx->ceil_floor.pixel_bits,
+			&mlx->ceil_floor.line_bytes, &mlx->ceil_floor.endian);
 	while (oy < PLAYER_DIM)
 	{
 		ox = -PLAYER_DIM;
 		while (ox < PLAYER_DIM)
 		{
-			mlx_pixel_put(mlx->mlx_ptr, mlx->mlx_win, 
-				mlx->pos.x + ox, mlx->pos.y + oy, 0xff0000);	
+			yx[0] = mlx->pos.y + oy;
+			yx[1] = mlx->pos.x + ox;
+			put_color_to_pixel(yx, buffer, 0x00ff0000, mlx);
 			ox++;
 		}
 		oy++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:03:38 by bard              #+#    #+#             */
-/*   Updated: 2024/06/03 21:26:22 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/04 10:00:53 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,25 @@
 
 
 void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
+{
+	int pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
+	if (mlx->ceil_floor.endian == 1)
+	{
+	    buffer[pixel + 0] = (color >> 24);
+	    buffer[pixel + 1] = (color >> 16) & 0xFF;
+	    buffer[pixel + 2] = (color >> 8) & 0xFF;
+		buffer[pixel + 3] = (color) & 0xFF;
+	}
+	else if (mlx->ceil_floor.endian == 0) 
+	{
+	    buffer[pixel + 0] = (color) & 0xFF;
+	    buffer[pixel + 1] = (color >> 8) & 0xFF;
+	    buffer[pixel + 2] = (color >> 16) & 0xFF;
+	    buffer[pixel + 3] = (color >> 24);
+	}
+}
+
+void	put_backdground_to_image(int *yx, char *buffer, int color, t_mlx *mlx)
 {
 	int pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
 	if (buffer[pixel] == 0 && buffer[pixel + 1] == 0 && buffer[pixel + 2] == 0 && buffer[pixel + 3] == 0)
@@ -56,31 +75,30 @@ void	draw_ceiling_floor(t_mlx *mlx)
 		while (++(yx[1]) < VIEWPORT_W)
 		{
 			if (yx[0] <= VIEWPORT_H / 2)
-				put_color_to_pixel(yx, buffer, mlx->ceiling_color, mlx);
+				put_backdground_to_image(yx, buffer, mlx->ceiling_color, mlx);
 			else
-				put_color_to_pixel(yx, buffer, mlx->floor_color, mlx);
+				put_backdground_to_image(yx, buffer, mlx->floor_color, mlx);
 		}
 	}
 }
 
-void	put_walls_texture(t_mlx *mlx)
+int	wall_index(t_mlx *mlx)
 {
-	if ((mlx->pos.angle < PI && mlx->pos.angle >= 0) && mlx->dist_t == mlx->dist_h)
+	if (mlx->dist_t == mlx->dist_v)
 	{
-		mlx->walls.buffer = mlx_get_data_addr(mlx->images[SO].img_ptr, &mlx->walls.pixel_bits, &mlx->walls.line_bytes, &mlx->walls.endian);
+		if (mlx->int_ray.angle > PI / 2 && mlx->int_ray.angle < 3 * (PI / 2))
+			return (WE); // west wall
+		else
+			return (EA); // east wall
 	}
-	if ((mlx->pos.angle > PI / 2 && mlx->pos.angle <= PI_3) && mlx->dist_t == mlx->dist_v)
+	else
 	{
-		mlx->walls.buffer = mlx_get_data_addr(mlx->images[EA].img_ptr, &mlx->walls.pixel_bits, &mlx->walls.line_bytes, &mlx->walls.endian);
-	}
-	if ((mlx->pos.angle > PI && mlx->pos.angle <= PI * 2) && mlx->dist_t == mlx->dist_h)
-	{
-		mlx->walls.buffer = mlx_get_data_addr(mlx->images[NO].img_ptr, &mlx->walls.pixel_bits, &mlx->walls.line_bytes, &mlx->walls.endian);
-	}
-	if ((mlx->pos.angle > PI_3 || mlx->pos.angle <= PI_2) && mlx->dist_t == mlx->dist_v)
-	{
-		mlx->walls.buffer = mlx_get_data_addr(mlx->images[WE].img_ptr, &mlx->walls.pixel_bits, &mlx->walls.line_bytes, &mlx->walls.endian);
-	}
+		if (mlx->int_ray.angle > 0 && mlx->int_ray.angle < PI)
+			return (SO); // south wall
+		else
+			return (NO); // north wall
+	}	
+	return (0);
 }
 
 int get_pixel(t_mlx *mlx, int px, int py)
@@ -95,69 +113,61 @@ int get_pixel(t_mlx *mlx, int px, int py)
 
 } 
 
-void	make_wall_in_image(t_mlx *mlx, int x, int y, float line_h)
+void	make_wall_in_image(t_mlx *mlx, int x, int y, t_texture tex)
 {
-	char	*buffer;
-	int		scale;
-	t_line	line;
-	double	wall_x;
-	// static int	tex_x = 0;
+	int		ind[2];
+	char *buffer[2];
+	int		yx[2];
 
-	buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr, &mlx->ceil_floor.pixel_bits,
+	buffer[0] = mlx_get_data_addr(mlx->ceil_floor.img_ptr, &mlx->ceil_floor.pixel_bits,
 		&mlx->ceil_floor.line_bytes, &mlx->ceil_floor.endian);
-	if (((mlx->pos.angle > PI_3 || mlx->pos.angle <= PI_2) && mlx->dist_t == mlx->dist_v) || 
-		((mlx->pos.angle > PI_2 || mlx->pos.angle <= PI_3) && mlx->dist_t == mlx->dist_v))
-		wall_x = mlx->pos.y + mlx->dist_v + mlx->ray_v.ray.fy;
-	else
-		wall_x = mlx->pos.x + mlx->dist_h + mlx->ray_h.ray.fx;
-	wall_x -= floor(wall_x);
-	line.x = x;
-	line.y = y;
-	scale = y * mlx->images[NO].line_bytes
-	- (VIEWPORT_H) * mlx->images[NO].line_bytes / 2 + line_h * mlx->images[NO].line_bytes / 2;
-	line.tex_y = ((scale * mlx->images[NO].line_bytes) / line_h)
-				/ mlx->ceil_floor.line_bytes;
-	line.tex_x = wall_x * 64;
-	// int value = (int)((y * mlx->ceil_floor.line_bytes + x));
-	int value_2 = (int)((line.tex_y * mlx->images[NO].line_bytes + line.tex_x * mlx->images[NO].line_bytes / 4));
-	// put_color_to_pixel(yx, buffer, (mlx->walls.buffer[value] | (mlx->walls.buffer[value + 1]) | mlx->walls.buffer[value + 2]), mlx);
-	// buffer[value] = mlx->walls.buffer[value_2];
-	// buffer[value + 1] = mlx->walls.buffer[value_2 + 1];
-	// buffer[value + 2] = mlx->walls.buffer[value_2 + 2];
-	// if (tex_x > mlx->walls.line_bytes / 4)
-	// 	tex_x = 0;
-	// tex_x++;
-	int color =  (mlx->walls.buffer[value_2])| (mlx->walls.buffer[value_2 + 1]) | (mlx->walls.buffer[value_2]);
-	int yx[2];
-	yx[0] = y;
-	yx[1] = x;
-	put_color_to_pixel(yx, buffer, color, mlx);
-	
+	buffer[1] = mlx_get_data_addr(mlx->images[wall_index(mlx)].img_ptr, &mlx->images[wall_index(mlx)].pixel_bits, &mlx->images[wall_index(mlx)].line_bytes, &mlx->images[wall_index(mlx)].endian);
+	ind[0] = (y * mlx->ceil_floor.line_bytes) + (x * 4);
+	ind[1] = ((int)(tex.ty) * (mlx->images[NO].i_height) + (int)(tex.tx)) * 4;
+	if (buffer[1])
+	{
+		yx[0] = y;
+		yx[1] = x;
+		if (mlx->dist_t == mlx->dist_v)
+			put_color_to_pixel(yx, buffer[0], ((((buffer[1][ind[1]] & 0xFF) 
+			| (buffer[1][ind[1] + 1] & 0xFF) << 8 
+			| (buffer[1][ind[1] + 2] & 0xFF) << 16) >> 1) & 0x7F7F7F), mlx);
+		else
+			put_color_to_pixel(yx, buffer[0], ((buffer[1][ind[1]] & 0xFF) 
+			| (buffer[1][ind[1] + 1] & 0xFF) << 8 
+			| (buffer[1][ind[1] + 2] & 0xFF) << 16), mlx);
+
+	}
 }
 
 void	draw_single_wall(t_mlx *mlx, float line_h, float line_o, int count)
 {
 	int i = -1;
 	int j = -1;
-	int	ty;
-	int	ty_step;
-	// int	c;
+	t_texture tex;
 
-	ty_step = (mlx->walls.line_bytes / 4) / line_h;
-	ty = 0;
+	tex.ty_off = 0;
+	tex.ty_step = mlx->images[wall_index(mlx)].i_height / line_h;
 	if (line_h > VIEWPORT_H)
+	{
+		tex.ty_off = (line_h - VIEWPORT_H) / 2;
 		line_h = VIEWPORT_H;
-	line_o = (VIEWPORT_H / 2) - line_h / 2;
+	}
+	line_o = (VIEWPORT_H / 2.0) - line_h / 2;
+	tex.ty = tex.ty_step * tex.ty_off;
+	if (mlx->dist_v < mlx->dist_h)
+		tex.tx = (int)(mlx->int_ray.y) % mlx->images[wall_index(mlx)].i_width;
+	else
+		tex.tx = (int)(mlx->int_ray.x) % mlx->images[wall_index(mlx)].i_width;
 	i = line_o;
 	while (++i < line_o + line_h)
 	{
 		j = -1;
 		while (++j < 2)
 		{
-			// c = get_pixel(mlx, count, (int)(ty));
-			make_wall_in_image(mlx, j + (count), i, line_h);
+			make_wall_in_image(mlx, (j + count), i, tex);
 		}
-		ty += ty_step;
+		tex.ty += tex.ty_step;
 	}
 }
 
@@ -169,13 +179,12 @@ void	draw_lines(t_mlx *mlx, int count)
 	float	line_h;
 
 	count_cols_rows(&i, &j, mlx->map);
-	line_h = (TILE_DIM) * VIEWPORT_H / (mlx->dist_t);
+	line_h = (mlx->images[wall_index(mlx)].i_height) * VIEWPORT_H / (mlx->dist_t);
 	line_o = 0; 
-	put_walls_texture(mlx);
 	draw_single_wall(mlx, line_h, line_o, count);
 }
 
-void	casting_rays(int *count, t_mlx *mlx)
+void	casting_rays(int *count, t_mlx *mlx, int tile_dim)
 {
 	if (++(*count) < VIEWPORT_W)
 		mlx->pos.angle += (DGR / (VIEWPORT_W / 60.0)) * (*count);
@@ -183,12 +192,10 @@ void	casting_rays(int *count, t_mlx *mlx)
 		mlx->pos.angle -= 2 * PI;
 	if (mlx->pos.angle < 0)
 		mlx->pos.angle += 2 * PI;
-	casting_rays_horizontal(mlx);
-	casting_rays_vertical(mlx);
+	casting_rays_horizontal(mlx, tile_dim);
+	casting_rays_vertical(mlx, tile_dim);
 	if (*count < VIEWPORT_W)
 		mlx->pos.angle -= (DGR / (VIEWPORT_W / 60.0)) * (*count);
-	if (*count == VIEWPORT_W)
-		*count = -1;
 }
 
 void	empty_buffer(t_mlx *mlx)
@@ -206,28 +213,27 @@ void	empty_buffer(t_mlx *mlx)
 }
 
 
-void	check_distance(t_mlx *mlx, int *color)
+void	check_distance(t_mlx *mlx)
 {
 	if (mlx->dist_h > mlx->dist_v)
 	{
 		mlx->int_ray.x = mlx->ray_v.ray.fx;
 		mlx->int_ray.y = mlx->ray_v.ray.fy;
+		mlx->int_ray.angle = mlx->ray_v.ray.angle;
 		mlx->dist_t = mlx->dist_v;
-		*color = 0xaa0000;
 	}
 	else
 	{
 		mlx->int_ray.x = mlx->ray_h.ray.fx;
 		mlx->int_ray.y = mlx->ray_h.ray.fy;
+		mlx->int_ray.angle = mlx->ray_h.ray.angle;
 		mlx->dist_t = mlx->dist_h;
-		*color = 0xee0000;
 	}
 }
 
 int	draw_walls(t_mlx *mlx)
 {
 	int			count;
-	int			color;
 	float		diff_a;
 
 
@@ -236,10 +242,12 @@ int	draw_walls(t_mlx *mlx)
 	mlx->pos.angle -= DGR * 30;
 	if (mlx->pos.angle >= 2 * PI)
 		mlx->pos.angle -= 2 * PI;
+	if (mlx->pos.angle < 0)
+		mlx->pos.angle += 2 * PI;
 	while (++count < VIEWPORT_W)
 	{
-		casting_rays(&count, mlx);
-		check_distance(mlx, &color);
+		casting_rays(&count, mlx, mlx->images[wall_index(mlx)].i_height);
+		check_distance(mlx);
 		diff_a = mlx->ray_v.ray.angle - (mlx->pos.angle + DGR * 30);
 		if (diff_a < 0)
 			diff_a += 2 * PI;
@@ -255,21 +263,36 @@ int	draw_walls(t_mlx *mlx)
 	return (1);
 }
 
+void	map_pos(t_mlx *mlx, int mode)
+{
+	if (mode == 1)
+	{
+		mlx->pos_handle = mlx->pos;
+		mlx->pos.x /= 8;
+		mlx->pos.y /= 8;
+	}
+	if (mode == 0)
+		mlx->pos = mlx->pos_handle;
+}
+
 int	draw_minimap(t_mlx *mlx)
 {
-	static int	count = -1;
-	int	color;
+	int	count;
 
+	map_pos(mlx, 1);
 	mlx->pos.angle -= DGR * 30;
 	if (mlx->pos.angle >= 2 * PI)
 		mlx->pos.angle -= 2 * PI;
-	casting_rays(&count, mlx);
-	check_distance(mlx, &color);
-	if (count == VIEWPORT_W)
-		count = -1;
-	mlx->pos.angle += DGR *30;
+	count = -1;
+	while (++count < VIEWPORT_W)
+	{
+		casting_rays(&count, mlx, MAP_TILE_DIM);
+		check_distance(mlx);
+		DDA(mlx->pos, mlx->int_ray, 0x00ffff, mlx);
+	}
+	mlx->pos.angle += DGR * 30;
 	draw_map(mlx);
-	DDA(mlx->pos, mlx->int_ray, 0x00ffff, mlx);
-	draw_player_loop(mlx);
+	draw_player_iterative(mlx);
+	map_pos(mlx, 0);
 	return (1);
 }

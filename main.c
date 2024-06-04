@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/03 20:31:16 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/04 08:29:03 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	on_game_start(t_mlx *mlx)
 			VIEWPORT_H);
 	draw_ceiling_floor(mlx);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0, 0);
-	draw_map(mlx);
 }
 
 
@@ -79,8 +78,8 @@ int	key_down(int keycode, t_mlx *mlx)
 	on_rotate(mlx, keycode);
 	compute_direction(mlx, &pdx, &pdy);
 	on_move(mlx, keycode, pdy, pdx);
-	draw_player_iterative(mlx);
 	draw_walls(mlx);
+	draw_minimap(mlx);
 	char *buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr,
 			&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes,
 			&mlx->ceil_floor.endian);
@@ -102,7 +101,7 @@ int	main(int argc, char **argv)
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);
 	mlx_hook(mlx.mlx_win, 2, (1L<<0), key_down, &mlx);
-	mlx_loop_hook(mlx.mlx_ptr, draw_minimap, &mlx);
+	// mlx_loop_hook(mlx.mlx_ptr, draw_minimap, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	destroy_game(&mlx);
 	return (0);

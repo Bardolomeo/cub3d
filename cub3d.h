@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/03 18:07:33 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/04 09:00:32 by bard             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@
 # define WE 2
 # define EA 3
 # define TEXTURE_DIM 64
-# define TILE_DIM 8
+# define TILE_DIM 64.0
+# define MAP_TILE_DIM 8
 # define PLAYER_DIM 2
 # define VELOCITY 8
 # define PI 3.14159265359
 # define PI_2 PI / 2
 # define PI_3 3 * PI / 2
 # define DGR 0.0174533
-# define VIEWPORT_W 1080
-# define VIEWPORT_H 720
+# define VIEWPORT_W 960
+# define VIEWPORT_H 520
 
 typedef struct s_v2
 {
@@ -86,6 +87,14 @@ typedef  struct  s_line
 	int  tex_y; //y coordinate of texture to draw
 } t_line;
 
+typedef	struct s_texture
+{
+	float	ty;
+	float	ty_step;
+	float	ty_off;
+	float	tx;
+} t_texture;
+
 typedef struct s_mlx
 {
 	void		*mlx_ptr;
@@ -95,6 +104,7 @@ typedef struct s_mlx
 	int			floor_color;
 	int			ceiling_color;
 	t_v2		pos;
+	t_v2		pos_handle;
 	t_v2		dir;
 	t_ray_vars	ray_v;
 	t_ray_vars	ray_h;
@@ -132,6 +142,7 @@ int				destroy_game(t_mlx *mlx);
 int				destroy_game_on_start(t_mlx *mlx);
 int				error_fclose(int *fd);
 void			count_cols_rows(int *i, int *j, char **map);
+int				wall_index(t_mlx *mlx);
 
 /* Parsing */
 int				check_all_elements(t_mlx *mlx);
@@ -155,6 +166,7 @@ void			draw_ceiling_floor(t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 void			empty_buffer(t_mlx *mlx);
+void			put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx);
 
 // movement
 void			on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
@@ -162,15 +174,15 @@ void			on_rotate(t_mlx *mlx, int keycode);
 void			compute_direction(t_mlx *mlx, float *pdx, float *pdy);
 
 /* Ray Casting*/
-int				casting_rays_horizontal(t_mlx *mlx);
-void			casting_rays(int *count, t_mlx *mlx);
-int				casting_rays_vertical(t_mlx *mlx);
+int				casting_rays_horizontal(t_mlx *mlx, int tile_dim);
+void			casting_rays(int *count, t_mlx *mlx, int tile_dim);
+int				casting_rays_vertical(t_mlx *mlx, int tile_dim);
 void			set_ray_coordinates_v(t_mlx *mlx, float nTan, float pi_2,
-					float pi_3);
-void			set_v_ray(t_mlx *mlx);
+					int tile_dim);
+void			set_v_ray(t_mlx *mlx, int tile_dim);
 int				float_comp(float first, float second);
-void			set_ray_coordinates_h(t_mlx *mlx, float coTan);
-void			set_h_ray(t_mlx *mlx);
+void			set_ray_coordinates_h(t_mlx *mlx, float coTan, int tile_dim);
+void			set_h_ray(t_mlx *mlx, int tile_dim);
 int				draw_walls(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
 
