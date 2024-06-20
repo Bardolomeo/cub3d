@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:41:48 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 19:04:22 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/20 16:27:26 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	parse_file(int argc, char **argv, t_mlx *mlx)
 
 	fd = -2;
 	if (argc != 2)
-		perror("Error");
+		perror("Not enough arguments");
 	else if (!ft_strchr(argv[1], '.'))
 		perror("Error");
 	else if (ft_strncmp(ft_strchr(argv[1], '.'), ".cub", 5))
