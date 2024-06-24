@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/24 17:05:09 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/24 19:53:11 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,23 @@ typedef struct s_keycub
 	int			c;
 }				t_keycub;
 
-typedef  struct  s_line
+typedef struct s_line
 {
-	int  x; //the x coordinate of line relative to screen
-	int  y; //the current pixel index of the line (along y axis)
-	int  y0; //y start index of drawing texture
-	int  y1; //y end index of drawing texture
-	int  tex_x; //x coordinate of texture to draw
-	int  tex_y; //y coordinate of texture to draw
-} t_line;
+	int x;     // the x coordinate of line relative to screen
+	int y;     // the current pixel index of the line (along y axis)
+	int y0;    // y start index of drawing texture
+	int y1;    // y end index of drawing texture
+	int tex_x; // x coordinate of texture to draw
+	int tex_y; // y coordinate of texture to draw
+}				t_line;
 
-typedef	struct s_texture
+typedef struct s_texture
 {
-	float	ty;
-	float	ty_step;
-	float	ty_off;
-	float	tx;
-} t_texture;
+	float		ty;
+	float		ty_step;
+	float		ty_off;
+	float		tx;
+}				t_texture;
 
 typedef struct s_mlx
 {
@@ -119,6 +119,7 @@ typedef struct s_mlx
 	t_image		walls_image;
 	t_keycub	keys;
 	t_v2		int_ray;
+	int			mouse_down;
 }				t_mlx;
 
 typedef struct s_rgb
@@ -157,7 +158,7 @@ int				valid_player(char tile);
 int				map_manager(int fd, char **argv, t_mlx *mlx);
 
 // graphics
-void			DDA(t_v2 vec0, t_v2 vec1, int color, t_mlx *mlx);
+void			dda(t_v2 vec0, t_v2 vec1, int color, t_mlx *mlx);
 int				draw_map(t_mlx *mlx);
 int				draw_player_loop(t_mlx *mlx);
 int				draw_player_iterative(t_mlx *mlx);
@@ -166,7 +167,8 @@ void			reset_buffer(t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 void			empty_buffer(t_mlx *mlx);
-void			put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx);
+void			put_color_to_pixel(int *yx, char *buffer, int color,
+					t_mlx *mlx);
 
 // movement
 void			on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
@@ -187,6 +189,16 @@ int				draw_walls(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
 
 /* FUNCTIONS */
+void	reset_buffer(t_mlx *mlx);
+int	get_pixel(t_mlx *mlx, int px, int py);
+void			put_background_to_image(int *yx, char *buffer, int color,
+					t_mlx *mlx);
+void			put_color_to_pixel(int *yx, char *buffer, int color,
+					t_mlx *mlx);
+int				mouse_move(int x, int y, t_mlx *mlx);
+int				key_down(int keycode, t_mlx *mlx);
+int				mouse_release_hook(int keycode, int x, int y, t_mlx *mlx);
+int				mouse_press_hook(int keycode, int x, int y, t_mlx *mlx);
 int				get_positioning(int i, t_mlx *mlx, char *str);
 float			dist_int(t_v2 player, t_v2 ray);
 int				draw_minimap(t_mlx *mlx);
