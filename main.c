@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/19 15:20:55 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/24 17:05:52 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,40 @@ int	key_down(int keycode, t_mlx *mlx)
 	on_move(mlx, keycode, pdy, pdx);
 	draw_walls(mlx);
 	draw_minimap(mlx);
-	char *buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr,
-			&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes,
-			&mlx->ceil_floor.endian);
-	(void)buffer;
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0,0);
+	return (0);
+}
+
+int	mouse_move(int x, int y, t_mlx *mlx)
+{
+	static int	last_x = -1;
+	static int	counter = 0;
+	
+	y = y;
+	counter++;
+	printf("%d, x:%d, y:%d\n", counter, x, y);
+	if (counter >= 5)
+	{
+		if (last_x == x)
+			return (0);
+		if (x > last_x)
+		{
+			mlx->pos.angle += (3 * DGR);
+			if (mlx->pos.angle > 2 * PI)
+				mlx->pos.angle -= 2 * PI;
+		}
+		else if (x < last_x)
+		{
+			mlx->pos.angle -= (3 * DGR);
+			if (mlx->pos.angle < 0)
+				mlx->pos.angle += 2 * PI;
+		}
+		last_x = x;
+		draw_walls(mlx);
+		draw_minimap(mlx);
+		mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->ceil_floor.img_ptr, 0,0);
+		counter = 0;
+	}
 	return (0);
 }
 
@@ -101,6 +130,8 @@ int	main(int argc, char **argv)
 	mlx_hook(mlx.mlx_win, 17, 1L << 2, handler_func, &(mlx.mlx_ptr));
 	mlx_key_hook(mlx.mlx_win, key_func, &mlx);
 	mlx_hook(mlx.mlx_win, 2, (1L<<0), key_down, &mlx);
+	mlx_hook(mlx.mlx_win, 6, (1L<<6), mouse_move, &mlx);
+	// mlx_loop_hook(mlx.mlx_ptr, draw_minimap, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	destroy_game(&mlx);
 	return (0);
