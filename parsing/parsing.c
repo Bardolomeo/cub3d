@@ -6,12 +6,11 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:41:48 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 19:04:22 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/19 14:52:42 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-#include <fcntl.h>
 
 int	get_positioning(int i, t_mlx *mlx, char *str)
 {
@@ -47,9 +46,9 @@ int	parse_file(int argc, char **argv, t_mlx *mlx)
 	fd = -2;
 	if (argc != 2)
 		perror("Error");
-	else if (!ft_strchr(argv[1], '.'))
+	else if (!ft_strrchr(argv[1], '.'))
 		perror("Error");
-	else if (ft_strncmp(ft_strchr(argv[1], '.'), ".cub", 5))
+	else if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 5))
 		perror("Error\n");
 	else if (!check_elements(fd, argv, mlx))
 		perror("Error");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/04 09:00:32 by bard             ###   ########.fr       */
+/*   Updated: 2024/06/19 15:19:13 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define PI_2 PI / 2
 # define PI_3 3 * PI / 2
 # define DGR 0.0174533
-# define VIEWPORT_W 960
-# define VIEWPORT_H 520
+# define VIEWPORT_W 1080
+# define VIEWPORT_H 720
 
 typedef struct s_v2
 {
@@ -162,7 +162,7 @@ int				draw_map(t_mlx *mlx);
 int				draw_player_loop(t_mlx *mlx);
 int				draw_player_iterative(t_mlx *mlx);
 void			draw_tile(int color, int i, int j, t_mlx *mlx);
-void			draw_ceiling_floor(t_mlx *mlx);
+void			reset_buffer(t_mlx *mlx);
 t_v2			player_pos(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 void			empty_buffer(t_mlx *mlx);

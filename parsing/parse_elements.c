@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:39:57 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 18:54:43 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/19 14:54:13 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	set_image(char *str, t_image *image, t_mlx *mlx)
 	free(filename);
 }
 
-// Prende gli elementi da .cub e li mette in struttura
 int	get_elements(char *str, t_mlx *mlx)
 {
 	int	i;
@@ -99,7 +98,6 @@ int	get_elements(char *str, t_mlx *mlx)
 	return (1);
 }
 
-// Prende gli elementi e si assicura che siano corretti
 int	check_elements(int fd, char **argv, t_mlx *mlx)
 {
 	char *temp;

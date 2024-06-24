@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:03:38 by bard              #+#    #+#             */
-/*   Updated: 2024/06/04 10:00:53 by bard             ###   ########.fr       */
+/*   Updated: 2024/06/19 15:17:47 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
 {
-	int pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
+	int pixel;
+
+	pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
 	if (mlx->ceil_floor.endian == 1)
 	{
 	    buffer[pixel + 0] = (color >> 24);
@@ -35,52 +37,51 @@ void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
 
 void	put_backdground_to_image(int *yx, char *buffer, int color, t_mlx *mlx)
 {
-	int pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
-	if (buffer[pixel] == 0 && buffer[pixel + 1] == 0 && buffer[pixel + 2] == 0 && buffer[pixel + 3] == 0)
+	int pixel;
+	int color2;
+	
+	pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
+	color2 = (buffer[pixel + 3] >> 24 | (buffer[pixel + 2] >> 16 & 0xFF) 
+	| (buffer[pixel + 1] >> 8 & 0xFF) | (buffer[pixel + 0] & 0xFF));
+	if (color2 == color)
+		return ;
+	if (mlx->ceil_floor.endian == 1)
 	{
-		if (mlx->ceil_floor.endian == 1)
-		{
-		    buffer[pixel + 0] = (color >> 24);
-		    buffer[pixel + 1] = (color >> 16) & 0xFF;
-		    buffer[pixel + 2] = (color >> 8) & 0xFF;
-		    buffer[pixel + 3] = (color) & 0xFF;
-		}
-		else if (mlx->ceil_floor.endian == 0) 
-		{
-		    buffer[pixel + 0] = (color) & 0xFF;
-		    buffer[pixel + 1] = (color >> 8) & 0xFF;
-		    buffer[pixel + 2] = (color >> 16) & 0xFF;
-		    buffer[pixel + 3] = (color >> 24);
-		}
+	    buffer[pixel + 0] = (color >> 24);
+	    buffer[pixel + 1] = (color >> 16) & 0xFF;
+	    buffer[pixel + 2] = (color >> 8) & 0xFF;
+	    buffer[pixel + 3] = (color) & 0xFF;
+	}
+	else if (mlx->ceil_floor.endian == 0) 
+	{
+	    buffer[pixel + 0] = (color) & 0xFF;
+	    buffer[pixel + 1] = (color >> 8) & 0xFF;
+	    buffer[pixel + 2] = (color >> 16) & 0xFF;
+	    buffer[pixel + 3] = (color >> 24);
 	}
 }
 
-void	draw_ceiling_floor(t_mlx *mlx)
-{
-	char	*buffer;
-	int		yx[2];
+// void	draw_ceiling_floor(t_mlx *mlx)
+// {
+// 	char	*buffer;
+// 	int		yx[2];
 
-	buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr,
-			&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes,
-			&mlx->ceil_floor.endian);
-	if (mlx->ceil_floor.pixel_bits != 32)
-    {
-		mlx->ceiling_color = mlx_get_color_value(mlx, mlx->ceiling_color);
-		mlx->floor_color = mlx_get_color_value(mlx, mlx->floor_color);
-	}
-	yx[0] = -1;
-	while (++(yx[0]) < VIEWPORT_H)
-	{
-		yx[1] = -1;
-		while (++(yx[1]) < VIEWPORT_W)
-		{
-			if (yx[0] <= VIEWPORT_H / 2)
-				put_backdground_to_image(yx, buffer, mlx->ceiling_color, mlx);
-			else
-				put_backdground_to_image(yx, buffer, mlx->floor_color, mlx);
-		}
-	}
-}
+// 	buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr,
+// 			&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes,
+// 			&mlx->ceil_floor.endian);
+// 	yx[0] = -1;
+// 	while (++(yx[0]) < VIEWPORT_H)
+// 	{
+// 		yx[1] = -1;
+// 		while (++(yx[1]) < VIEWPORT_W)
+// 		{
+// 			if (yx[0] <= VIEWPORT_H / 2)
+// 				put_backdground_to_image(yx, buffer, mlx->ceiling_color, mlx);
+// 			else
+// 				put_backdground_to_image(yx, buffer, mlx->floor_color, mlx);
+// 		}
+// 	}
+// }
 
 int	wall_index(t_mlx *mlx)
 {
@@ -198,17 +199,29 @@ void	casting_rays(int *count, t_mlx *mlx, int tile_dim)
 		mlx->pos.angle -= (DGR / (VIEWPORT_W / 60.0)) * (*count);
 }
 
-void	empty_buffer(t_mlx *mlx)
+void	reset_buffer(t_mlx *mlx)
 {
 	char *buffer;
-	int		i = 0;
+	int		yx[2];
 
 	buffer = mlx_get_data_addr(mlx->ceil_floor.img_ptr, 
 		&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes, &mlx->ceil_floor.endian);
-	while (i < VIEWPORT_H * VIEWPORT_W * 4)
+	if (mlx->ceil_floor.pixel_bits != 32)
+    {
+		mlx->ceiling_color = mlx_get_color_value(mlx, mlx->ceiling_color);
+		mlx->floor_color = mlx_get_color_value(mlx, mlx->floor_color);
+	}
+	yx[0] = -1;
+	while (++(yx[0]) < VIEWPORT_H)
 	{
-		buffer[i] = 0;
-		i++;
+		yx[1] = -1;
+		while (++(yx[1]) < VIEWPORT_W)
+		{
+			if (yx[0] <= VIEWPORT_H / 2)
+				put_backdground_to_image(yx, buffer, mlx->ceiling_color, mlx);
+			else
+				put_backdground_to_image(yx, buffer, mlx->floor_color, mlx);
+		}
 	}
 }
 
@@ -238,7 +251,7 @@ int	draw_walls(t_mlx *mlx)
 
 
 	count = -1;
-	empty_buffer(mlx);
+	reset_buffer(mlx);
 	mlx->pos.angle -= DGR * 30;
 	if (mlx->pos.angle >= 2 * PI)
 		mlx->pos.angle -= 2 * PI;
@@ -259,7 +272,7 @@ int	draw_walls(t_mlx *mlx)
 		draw_lines(mlx, count);
 	}
 	mlx->pos.angle += DGR * 30;
-	draw_ceiling_floor(mlx);
+	// draw_ceiling_floor(mlx);
 	return (1);
 }
 
