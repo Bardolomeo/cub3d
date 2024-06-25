@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_game_closure.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:49 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/03 16:24:21 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/25 15:55:43 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	destroy_game(t_mlx *mlx)
 	while (++i < 4 && mlx->images[i].img_ptr != NULL)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->images[i].img_ptr);
 	ft_free_matrix((void **)mlx->map);
-	// mlx_destroy_image(mlx->mlx_ptr, mlx->walls.img_ptr);
 	mlx_destroy_image(mlx->mlx_ptr, mlx->ceil_floor.img_ptr);
 	mlx_destroy_display(mlx->mlx_ptr);
 	free(mlx->mlx_ptr);

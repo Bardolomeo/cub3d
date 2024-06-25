@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:41:48 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/24 17:06:16 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/25 16:10:38 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	get_positioning(int i, t_mlx *mlx, char *str)
 	}
 	else
 		return (0);
-	return (1);	
+	return (1);
 }
 
 int	parse_file(int argc, char **argv, t_mlx *mlx)

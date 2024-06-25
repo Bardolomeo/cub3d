@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bard <bard@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:26:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/23 15:33:16 by bard             ###   ########.fr       */
+/*   Updated: 2024/06/25 16:10:08 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ int	initialize_map(char ***map, int *fd)
 
 /*per il check della mappa alla fine controllo che:
 	- ci sia un solo player
-	- se trova il player o uno zero questi devono essere circondati da altri zeri,
-		uni o dal player.
+	- se trova il player o uno zero questi devono essere circondati 
+		da altri zeri, uni o dal player.
 	- Se trova uno zero o il player nei bordi della mappa esce direttamente*/
 int	check_map(char **map, t_mlx *mlx)
 {
@@ -98,6 +98,7 @@ int	check_map(char **map, t_mlx *mlx)
 	{
 		j = -1;
 		while (map[i][++j])
+		{
 			if (map[i][j] == '0' || valid_player(map[i][j]))
 			{
 				if (i == 0 || map[i] == NULL || j == 0 || !valid_tile(map, i,
@@ -106,19 +107,17 @@ int	check_map(char **map, t_mlx *mlx)
 				if (valid_player(map[i][j]))
 					player += map[i][j];
 			}
+		}
 	}
-    if (!valid_player(player))
-    {
-        return (destroy_game_on_start(mlx));
-    }
-    return (1);
+	if (!valid_player(player))
+		return (destroy_game_on_start(mlx));
+	return (1);
 }
-
 
 int	map_manager(int fd, char **argv, t_mlx *mlx)
 {
-	char **tmp_map;
-	int cnt_lines;
+	char	**tmp_map;
+	int		cnt_lines;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)

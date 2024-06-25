@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_elements.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:39:57 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/19 14:54:13 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/25 16:11:03 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	get_elements(char *str, t_mlx *mlx)
 
 int	check_elements(int fd, char **argv, t_mlx *mlx)
 {
-	char *temp;
+	char	*temp;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)

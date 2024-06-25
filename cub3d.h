@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/24 19:53:11 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/25 16:04:08 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ int				destroy_game_on_start(t_mlx *mlx);
 int				error_fclose(int *fd);
 void			count_cols_rows(int *i, int *j, char **map);
 int				wall_index(t_mlx *mlx);
+void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
+t_v2			player_pos(t_mlx *mlx);
 
 /* Parsing */
 int				check_all_elements(t_mlx *mlx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 18:38:24 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/29 15:27:34 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/25 15:58:14 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ float	dist(t_v2 player, t_f_v2 ray)
 {
 	float		h_comp;
 	float		v_comp;
-	float	dist;
+	float		dist;
 
 	h_comp = player.x - ray.fx;
 	v_comp = player.y - ray.fy;
@@ -28,7 +28,7 @@ float	dist_int(t_v2 player, t_v2 ray)
 {
 	float		h_comp;
 	float		v_comp;
-	float	dist;
+	float		dist;
 
 	h_comp = player.x - ray.x;
 	v_comp = player.y - ray.y;
@@ -38,21 +38,19 @@ float	dist_int(t_v2 player, t_v2 ray)
 
 int	float_comp(float first, float second)
 {
-    float	diff;
+	float	diff;
 	float	largest;
-	
+
 	diff = fabs(first - second);
-    first = fabs(first);
-    second = fabs(second);
+	first = fabs(first);
+	second = fabs(second);
 	if (second > first)
 		largest = second;
 	else
 		largest = first;
-    if (diff <= largest * 0.0001)
-	{
-        return (1);
-	}
+	if (diff <= largest * 0.0001)
+		return (1);
 	if (diff < 0.0001 && second == 0)
 		return (1);
-    return (0);
+	return (0);
 }
