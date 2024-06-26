@@ -6,7 +6,7 @@
 #    By: mtani <mtani@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/06/25 16:03:18 by mtani            ###   ########.fr        #
+#    Updated: 2024/06/26 17:56:06 by mtani            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SRCS_MANDATORY	=	main.c \
 					utils/clean_game_closure.c utils/parsing_utils.c parsing/parse_map.c utils/drawing.c utils/raycasting_utils.c utils/player_pos.c \
 					game/movement.c game/keys_and_mouse.c \
 					graphics/ray_casting.c graphics/dda.c graphics/ray_vertical.c graphics/ray_horizontal.c \
-					graphics/color_manipulation.c 
+					graphics/color_manipulation.c graphics/raycasting_extra.c
 
 LFLAGS = -lft -L./Libft -lmlx -Lminilibx-linux -lX11 -lXext -lm -no-pie
 

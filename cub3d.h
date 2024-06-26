@@ -6,7 +6,7 @@
 /*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/25 16:04:08 by mtani            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:59:42 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define PI_2 PI / 2
 # define PI_3 3 * PI / 2
 # define DGR 0.0174533
-# define VIEWPORT_W 1080
-# define VIEWPORT_H 720
+# define VIEWPORT_W 960
+# define VIEWPORT_H 540
 
 typedef struct s_v2
 {
@@ -79,12 +79,12 @@ typedef struct s_keycub
 
 typedef struct s_line
 {
-	int x;     // the x coordinate of line relative to screen
-	int y;     // the current pixel index of the line (along y axis)
-	int y0;    // y start index of drawing texture
-	int y1;    // y end index of drawing texture
-	int tex_x; // x coordinate of texture to draw
-	int tex_y; // y coordinate of texture to draw
+	int x;
+	int y;
+	int y0;
+	int y1;
+	int tex_x;
+	int tex_y;
 }				t_line;
 
 typedef struct s_texture
@@ -103,6 +103,7 @@ typedef struct s_mlx
 	t_image		images[4];
 	int			floor_color;
 	int			ceiling_color;
+	float		render_flag;
 	t_v2		pos;
 	t_v2		pos_handle;
 	t_v2		dir;
@@ -139,6 +140,7 @@ int				get_g(int trgb);
 int				get_b(int trgb);
 
 // Utils
+void			init_elements(t_mlx *mlx);
 int				destroy_game(t_mlx *mlx);
 int				destroy_game_on_start(t_mlx *mlx);
 int				error_fclose(int *fd);
@@ -146,6 +148,10 @@ void			count_cols_rows(int *i, int *j, char **map);
 int				wall_index(t_mlx *mlx);
 void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 t_v2			player_pos(t_mlx *mlx);
+int				wall_index(t_mlx *mlx);
+void			make_wall_in_image(t_mlx *mlx, int x, int y, t_texture tex);
+void			check_distance(t_mlx *mlx);
+void			map_pos(t_mlx *mlx, int mode);
 
 /* Parsing */
 int				check_all_elements(t_mlx *mlx);
@@ -171,6 +177,8 @@ void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 void			empty_buffer(t_mlx *mlx);
 void			put_color_to_pixel(int *yx, char *buffer, int color,
 					t_mlx *mlx);
+void			put_color_to_wall(t_mlx *mlx, int *yx, char *buffer[2], int ind[2]);
+int				draw_minimap(t_mlx *mlx);
 
 // movement
 void			on_move(t_mlx *mlx, int keycode, float pdy, float pdx);
@@ -191,8 +199,8 @@ int				draw_walls(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
 
 /* FUNCTIONS */
-void	reset_buffer(t_mlx *mlx);
-int	get_pixel(t_mlx *mlx, int px, int py);
+void			reset_buffer(t_mlx *mlx);
+int				get_pixel(t_mlx *mlx, int px, int py);
 void			put_background_to_image(int *yx, char *buffer, int color,
 					t_mlx *mlx);
 void			put_color_to_pixel(int *yx, char *buffer, int color,

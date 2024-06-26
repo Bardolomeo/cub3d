@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/24 19:45:33 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/26 17:58:42 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,6 @@ int	key_func(int keycode, t_mlx *mlx)
 	if (keycode == 65307)
 		handler_func(mlx);
 	return (0);
-}
-
-void	init_elements(t_mlx *mlx)
-{
-	int	i;
-
-	i = 0;
-	mlx->ceiling_color = -1;
-	mlx->floor_color = -1;
-	mlx->map = NULL;
-	while (i < 4)
-	{
-		mlx->images[i].img_ptr = NULL;
-		i++;
-	}
-	mlx->ceil_floor.img_ptr = NULL;
-	mlx->walls.img_ptr = NULL;
-	mlx->pos.x = 0;
-	mlx->pos.y = 0;
-	mlx->dir.x = 16;
-	mlx->dir.y = 16;
-	mlx->keys.w = 0;
-	mlx->keys.n = 0;
-	mlx->keys.s = 0;
-	mlx->keys.e = 0;
-	mlx->keys.f = 0;
-	mlx->keys.c = 0;
-	mlx->mouse_down = 0;
 }
 
 void	on_game_start(t_mlx *mlx)

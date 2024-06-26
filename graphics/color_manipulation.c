@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_manipulation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 19:51:47 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/24 20:44:36 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/06/26 17:48:15 by mtani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
 		buffer[pixel + 0] = (color >> 24);
 		buffer[pixel + 1] = (color >> 16) & 0xFF;
 		buffer[pixel + 2] = (color >> 8) & 0xFF;
-		buffer[pixel + 3] = (color)&0xFF;
+		buffer[pixel + 3] = (color) & 0xFF;
 	}
 	else if (mlx->ceil_floor.endian == 0)
 	{
-		buffer[pixel + 0] = (color)&0xFF;
+		buffer[pixel + 0] = (color) & 0xFF;
 		buffer[pixel + 1] = (color >> 8) & 0xFF;
 		buffer[pixel + 2] = (color >> 16) & 0xFF;
 		buffer[pixel + 3] = (color >> 24);
@@ -49,11 +49,11 @@ void	put_background_to_image(int *yx, char *buffer, int color, t_mlx *mlx)
 		buffer[pixel + 0] = (color >> 24);
 		buffer[pixel + 1] = (color >> 16) & 0xFF;
 		buffer[pixel + 2] = (color >> 8) & 0xFF;
-		buffer[pixel + 3] = (color)&0xFF;
+		buffer[pixel + 3] = (color) & 0xFF;
 	}
 	else if (mlx->ceil_floor.endian == 0)
 	{
-		buffer[pixel + 0] = (color)&0xFF;
+		buffer[pixel + 0] = (color) & 0xFF;
 		buffer[pixel + 1] = (color >> 8) & 0xFF;
 		buffer[pixel + 2] = (color >> 16) & 0xFF;
 		buffer[pixel + 3] = (color >> 24);
@@ -97,4 +97,17 @@ int	get_pixel(t_mlx *mlx, int px, int py)
 				+ 2] << 16) | (mlx->walls.buffer[ind
 				+ 1] << 8) | (mlx->walls.buffer[ind]));
 	return (c);
+}
+
+void	put_color_to_wall(t_mlx *mlx, int *yx, char *buffer[2], int ind[2])
+{
+	if (mlx->dist_t == mlx->dist_v)
+		put_color_to_pixel(yx, buffer[0],
+			((((buffer[1][ind[1]] & 0xFF) | (buffer[1][ind[1]
+							+ 1] & 0xFF) << 8 | (buffer[1][ind[1]
+							+ 2] & 0xFF) << 16) >> 1) & 0x7F7F7F), mlx);
+	else
+		put_color_to_pixel(yx, buffer[0],
+			((buffer[1][ind[1]] & 0xFF) | (buffer[1][ind[1] + 1] & 0xFF)
+				<< 8 | (buffer[1][ind[1] + 2] & 0xFF) << 16), mlx);
 }
