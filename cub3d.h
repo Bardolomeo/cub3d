@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/26 17:59:42 by mtani            ###   ########.fr       */
+/*   Updated: 2024/06/26 19:50:15 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "./minilibx-linux/mlx.h"
 # include "Libft/libft.h"
 # include <fcntl.h>
-# include <float.h>
 # include <math.h>
 # include <stdio.h>
 # define NO 0
@@ -29,8 +28,8 @@
 # define PLAYER_DIM 2
 # define VELOCITY 8
 # define PI 3.14159265359
-# define PI_2 PI / 2
-# define PI_3 3 * PI / 2
+# define PI_2 1.570796326795
+# define PI_3 4.712388980385001
 # define DGR 0.0174533
 # define VIEWPORT_W 960
 # define VIEWPORT_H 540
@@ -79,12 +78,12 @@ typedef struct s_keycub
 
 typedef struct s_line
 {
-	int x;
-	int y;
-	int y0;
-	int y1;
-	int tex_x;
-	int tex_y;
+	int			x;
+	int			y;
+	int			y0;
+	int			y1;
+	int			tex_x;
+	int			tex_y;
 }				t_line;
 
 typedef struct s_texture
@@ -152,6 +151,7 @@ int				wall_index(t_mlx *mlx);
 void			make_wall_in_image(t_mlx *mlx, int x, int y, t_texture tex);
 void			check_distance(t_mlx *mlx);
 void			map_pos(t_mlx *mlx, int mode);
+void			float_comp_conditional(t_mlx *mlx, t_ray_vars *ray);
 
 /* Parsing */
 int				check_all_elements(t_mlx *mlx);
@@ -177,7 +177,8 @@ void			find_player_in_map(char **map, int *i, int *j, t_v2 *vector);
 void			empty_buffer(t_mlx *mlx);
 void			put_color_to_pixel(int *yx, char *buffer, int color,
 					t_mlx *mlx);
-void			put_color_to_wall(t_mlx *mlx, int *yx, char *buffer[2], int ind[2]);
+void			put_color_to_wall(t_mlx *mlx, int *yx, char *buffer[2],
+					int ind[2]);
 int				draw_minimap(t_mlx *mlx);
 
 // movement

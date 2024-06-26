@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_pos.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 16:02:28 by mtani             #+#    #+#             */
-/*   Updated: 2024/06/25 16:02:53 by mtani            ###   ########.fr       */
+/*   Updated: 2024/06/26 18:53:57 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ t_v2	player_pos(t_mlx *mlx)
 	if (mlx->map[i][j] == 'N')
 		vector.angle = PI_3;
 	else if (mlx->map[i][j] == 'W')
-		vector.angle = 0;
-	else if (mlx->map[i][j] == 'E')
 		vector.angle = PI;
+	else if (mlx->map[i][j] == 'E')
+		vector.angle = 0;
 	else if (mlx->map[i][j] == 'S')
 		vector.angle = PI_2;
 	vector.x = vector.x * TILE_DIM + TILE_DIM / 2;

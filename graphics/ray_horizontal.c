@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_horizontal.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:49:53 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/26 17:44:27 by mtani            ###   ########.fr       */
+/*   Updated: 2024/06/26 19:38:33 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	cast_hrays_loop(t_mlx *mlx, t_v2 *m, int nrows, int ncols)
 		m->x = 0;
 	if (m->y < 0 || m->y > ncols)
 		m->y = 0;
+	if (m->x > (int)ft_strlen(mlx->map[m->y]))
+		m->x = ft_strlen(mlx->map[m->y]) - 1;
 	if ((m->y >= 0 && m->x >= 0) && (m->y <= ncols && m->x <= nrows)
 		&& mlx->map[m->y][m->x] == '1')
 	{
