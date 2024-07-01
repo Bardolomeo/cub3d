@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting_utils.c                                 :+:      :+:    :+:   */
+/*   raycasting_extra.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 17:50:28 by mtani             #+#    #+#             */
-/*   Updated: 2024/06/26 17:52:10 by mtani            ###   ########.fr       */
+/*   Updated: 2024/07/01 19:25:50 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	make_wall_in_image(t_mlx *mlx, int x, int y, t_texture tex)
 	char	*buffer[2];
 	int		yx[2];
 
+	ind[0] = 0;
+	ind[1] = 0;
 	buffer[0] = mlx_get_data_addr(mlx->ceil_floor.img_ptr,
 			&mlx->ceil_floor.pixel_bits, &mlx->ceil_floor.line_bytes,
 			&mlx->ceil_floor.endian);
@@ -46,6 +48,10 @@ void	make_wall_in_image(t_mlx *mlx, int x, int y, t_texture tex)
 			&mlx->images[wall_index(mlx)].endian);
 	ind[0] = (y * mlx->ceil_floor.line_bytes) + (x * 4);
 	ind[1] = ((int)(tex.ty) *(mlx->images[NO].i_height) + (int)(tex.tx)) * 4;
+	if (ind[0] < 0)
+		ind[0] = 0;
+	if (ind[1] < 0)
+		ind[1] = 0;
 	if (buffer[1])
 	{
 		yx[0] = y;

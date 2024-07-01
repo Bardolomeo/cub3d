@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 16:02:28 by mtani             #+#    #+#             */
-/*   Updated: 2024/06/26 18:53:57 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/01 18:45:23 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,13 @@ t_v2	player_pos(t_mlx *mlx)
 	vector.x = vector.x * TILE_DIM + TILE_DIM / 2;
 	vector.y = vector.y * TILE_DIM + TILE_DIM / 2;
 	return (vector);
+}
+
+void	clean_gnl(char *tstr, int *fd)
+{
+	while (tstr != NULL)
+	{
+		tstr = get_next_line(*fd);
+		free(tstr);
+	}
 }

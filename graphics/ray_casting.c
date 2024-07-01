@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:03:38 by bard              #+#    #+#             */
-/*   Updated: 2024/06/26 17:52:26 by mtani            ###   ########.fr       */
+/*   Updated: 2024/07/01 20:21:11 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 void	draw_swall_loop(t_mlx *mlx, int count, int i, t_texture tex)
 {
-	int	j;
-
-	j = -1;
-	while (++j < 2)
-		make_wall_in_image(mlx, (j + count), i, tex);
+	make_wall_in_image(mlx, (count), i, tex);
 }
 
 void	draw_single_wall(t_mlx *mlx, float line_h, float line_o, int count)
@@ -63,7 +59,7 @@ void	draw_lines(t_mlx *mlx, int count)
 
 void	casting_rays(int *count, t_mlx *mlx, int tile_dim)
 {
-	if (++(*count) < VIEWPORT_W)
+	if ((*count) < VIEWPORT_W)
 		mlx->pos.angle += (DGR / (VIEWPORT_W / 60.0)) * (*count);
 	if (mlx->pos.angle > 2 * PI)
 		mlx->pos.angle -= 2 * PI;

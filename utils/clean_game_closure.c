@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_game_closure.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:49 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/26 17:59:58 by mtani            ###   ########.fr       */
+/*   Updated: 2024/07/01 19:40:12 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	init_elementstwo(t_mlx *mlx)
 {
 	mlx->dist_t = 0;
 	mlx->dist_v = 0;
+	mlx->dist_h = 0;
 	mlx->int_ray.angle = 0;
 	mlx->render_flag = 0.0;
 	mlx->keys.w = 0;

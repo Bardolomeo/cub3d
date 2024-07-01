@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   color_manipulation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 19:51:47 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/26 17:48:15 by mtani            ###   ########.fr       */
+/*   Updated: 2024/06/27 16:46:39 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	put_color_to_pixel(int *yx, char *buffer, int color, t_mlx *mlx)
+void	put_color_to_pixel(int yx[2], char *buffer, int color, t_mlx *mlx)
 {
 	int	pixel;
 
 	pixel = (yx[0] * mlx->ceil_floor.line_bytes) + (yx[1] * 4);
+	if (pixel < 0)
+		return ;
 	if (mlx->ceil_floor.endian == 1)
 	{
 		buffer[pixel + 0] = (color >> 24);

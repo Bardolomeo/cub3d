@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:52:17 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/26 19:41:32 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/01 21:02:54 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	set_v_ray(t_mlx *mlx, int tile_dim)
 
 	mlx->ray_v.ray.angle = mlx->pos.angle;
 	mlx->ray_v.dof = 0;
-	n_tan = -(((sin(mlx->ray_v.ray.angle)) / cos(mlx->ray_v.ray.angle)));
+	n_tan = -(tan (mlx->ray_v.ray.angle));
 	pi_2 = (PI / 2);
 	set_ray_coordinates_v(mlx, n_tan, pi_2, tile_dim);
 }
 
-void	float_comp_conditional(t_mlx *mlx, t_ray_vars *ray)
+int	float_comp_conditional(t_mlx *mlx, t_ray_vars *ray)
 {
 	if (float_comp(ray->ray.angle, PI_3)
 		|| float_comp(ray->ray.angle, PI_2)
@@ -33,8 +33,9 @@ void	float_comp_conditional(t_mlx *mlx, t_ray_vars *ray)
 	{
 		ray->ray.fx = mlx->pos.x;
 		ray->ray.fy = mlx->pos.y;
-		ray->dof = mlx->limit_dof;
+		return (1);
 	}
+	return (0);
 }
 
 void	set_ray_coordinates_v(t_mlx *mlx, float nTan, float pi_2, int tile_dim)
@@ -80,26 +81,23 @@ int	raycast_vertical_loop(t_mlx *mlx, t_v2 m, int nrows, int ncols)
 int	casting_rays_vertical(t_mlx *mlx, int tile_dim)
 {
 	t_v2	m;
-	int		nrows;
-	int		ncols;
+	int		cols_rows[2];
+	t_f_v2	src_ray;
+	int		tmp;
 
-	count_cols_rows(&ncols, &nrows, mlx->map);
+	m.x = 0;
+	m.y = 0;
+	count_cols_rows(&cols_rows[0], &cols_rows[1], mlx->map);
 	set_v_ray(mlx, tile_dim);
+	src_ray = mlx->ray_v.ray;
 	while (mlx->ray_v.dof < mlx->limit_dof)
 	{
-		m.x = (int)mlx->ray_v.ray.fx >> (int)log2(tile_dim);
-		m.y = (int)mlx->ray_v.ray.fy >> (int)log2(tile_dim);
-		if (m.x < 0 || m.x > nrows)
-			m.x = 0;
-		if (m.y < 0 || m.y > ncols)
-			m.y = 0;
-		if (m.x > (int)ft_strlen(mlx->map[m.y]))
-			m.x = ft_strlen(mlx->map[m.y]) - 1;
-		if (raycast_vertical_loop(mlx, m, nrows, ncols))
-			break ;
+			m.x = (int)mlx->ray_v.ray.fx >> (int)log2(tile_dim);
+			m.y = (int)mlx->ray_v.ray.fy >> (int)log2(tile_dim);
+			tmp = ray_vertical_recalculate(&m, cols_rows, src_ray, mlx);
+			if (tmp == 1)
+				break;
 	}
-	if (mlx->ray_v.dof == mlx->limit_dof)
-		mlx->dist_v = mlx->prev_dist_v;
-	mlx->prev_dist_v = mlx->dist_v;
 	return (1);
 }
+

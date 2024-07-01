@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:38:54 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/24 19:50:39 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/01 17:05:10 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	dda_put_pixel_in_image(t_mlx *mlx, int color, t_f_v2 point)
 			&mlx->ceil_floor.endian);
 	yx[0] = round(point.fy);
 	yx[1] = round(point.fx);
+	if (yx[0] > VIEWPORT_H)
+		yx[0] = VIEWPORT_H;
 	put_color_to_pixel(yx, buffer, color, mlx);
 }
 

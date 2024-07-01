@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:26:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/25 16:10:08 by mtani            ###   ########.fr       */
+/*   Updated: 2024/07/01 18:46:11 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,18 @@ int	count_map_lines(int *fd)
 	tstr = get_next_line(*fd);
 	if (!tstr)
 		return (0);
-	while (tstr)
+	while (tstr && *tstr != '\n')
 	{
 		free(tstr);
 		tstr = get_next_line(*fd);
 		count++;
 	}
+	if (tstr != NULL)
+		free(tstr);
 	return (count);
 }
 
-int	initialize_map(char ***map, int *fd)
+int	initialize_map(char **map, int *fd)
 {
 	char	*str;
 	char	*tstr;
@@ -63,7 +65,7 @@ int	initialize_map(char ***map, int *fd)
 	i = 0;
 	set_cursor_map(fd, &tstr);
 	str = ft_strtrim(tstr, "\n");
-	(*map)[i++] = str;
+	(map)[i++] = str;
 	free(tstr);
 	while (*str)
 	{
@@ -75,9 +77,10 @@ int	initialize_map(char ***map, int *fd)
 			free(str);
 			break ;
 		}
-		(*map)[i] = str;
+		(map)[i] = str;
 		i++;
 	}
+	clean_gnl(tstr, fd);
 	return (1);
 }
 
@@ -127,9 +130,11 @@ int	map_manager(int fd, char **argv, t_mlx *mlx)
 		return (destroy_game_on_start(mlx));
 	close(fd);
 	tmp_map = malloc(sizeof(char *) * (cnt_lines + 1));
+	if (!tmp_map)
+		return (0);
 	tmp_map[cnt_lines] = NULL;
 	fd = open(argv[1], O_RDONLY);
-	if (!initialize_map(&tmp_map, &fd))
+	if (!initialize_map(tmp_map, &fd))
 		return (destroy_game_on_start(mlx));
 	close(fd);
 	if (!check_map(tmp_map, mlx))

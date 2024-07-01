@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/26 19:50:15 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/01 20:58:55 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "./minilibx-linux/mlx.h"
 # include "Libft/libft.h"
 # include <fcntl.h>
+# include <limits.h>
 # include <math.h>
 # include <stdio.h>
 # define NO 0
@@ -151,7 +152,8 @@ int				wall_index(t_mlx *mlx);
 void			make_wall_in_image(t_mlx *mlx, int x, int y, t_texture tex);
 void			check_distance(t_mlx *mlx);
 void			map_pos(t_mlx *mlx, int mode);
-void			float_comp_conditional(t_mlx *mlx, t_ray_vars *ray);
+int				float_comp_conditional(t_mlx *mlx, t_ray_vars *ray);
+void			clean_gnl(char *tstr, int *fd);
 
 /* Parsing */
 int				check_all_elements(t_mlx *mlx);
@@ -198,8 +200,15 @@ void			set_ray_coordinates_h(t_mlx *mlx, float coTan, int tile_dim);
 void			set_h_ray(t_mlx *mlx, int tile_dim);
 int				draw_walls(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
+int				re_calculate_ray(t_mlx *mlx, t_v2 *m, t_f_v2 src_ray,
+					int cols_rows[2]);
+void			set_limit_dof(int cols_rows[2], t_mlx *mlx);
+int				raycast_vertical_loop(t_mlx *mlx, t_v2 m, int nrows, int ncols);
+int				ray_vertical_recalculate(t_v2 *m, int cols_rows[2],
+					t_f_v2 src_ray, t_mlx *mlx);
 
 /* FUNCTIONS */
+int				line_start(t_v2 *m, char which, t_mlx *mlx);
 void			reset_buffer(t_mlx *mlx);
 int				get_pixel(t_mlx *mlx, int px, int py);
 void			put_background_to_image(int *yx, char *buffer, int color,
