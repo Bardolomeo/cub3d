@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 18:38:24 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/25 15:58:14 by mtani            ###   ########.fr       */
+/*   Updated: 2024/07/02 21:11:43 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 float	dist(t_v2 player, t_f_v2 ray)
 {
-	float		h_comp;
-	float		v_comp;
+	int		h_comp;
+	int		v_comp;
 	float		dist;
 
 	h_comp = player.x - ray.fx;

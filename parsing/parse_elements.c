@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_elements.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtani <mtani@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:39:57 by gsapio            #+#    #+#             */
-/*   Updated: 2024/06/25 16:11:03 by mtani            ###   ########.fr       */
+/*   Updated: 2024/07/02 20:00:50 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ int	check_all_elements(t_mlx *mlx)
 	i = 0;
 	if (mlx->ceiling_color == -1 || mlx->floor_color == -1)
 	{
-		destroy_game_on_start(mlx);
 		return (0);
 	}
 	while (i < 4)
 	{
 		if (mlx->images[i].img_ptr == NULL)
 		{
-			destroy_game_on_start(mlx);
 			return (0);
 		}
 		i++;
@@ -92,7 +90,6 @@ int	get_elements(char *str, t_mlx *mlx)
 	else
 	{
 		free(str);
-		destroy_game_on_start(mlx);
 		return (0);
 	}
 	return (1);
@@ -113,11 +110,13 @@ int	check_elements(int fd, char **argv, t_mlx *mlx)
 		if (!get_elements(temp, mlx))
 		{
 			error_fclose(&fd);
+			clean_gnl(temp, &fd);
 			return (0);
 		}
 		free(temp);
 		temp = get_next_line(fd);
 	}
+	clean_gnl(temp, &fd);
 	close(fd);
 	if (!check_all_elements(mlx))
 		return (0);

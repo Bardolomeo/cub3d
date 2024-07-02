@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:52:17 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/02 19:48:42 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/02 21:04:36 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	set_v_ray(t_mlx *mlx, int tile_dim)
 
 	mlx->ray_v.ray.angle = mlx->pos.angle;
 	mlx->ray_v.dof = 0;
-	n_tan = -(tan (mlx->ray_v.ray.angle));
+	n_tan = -(tan (mlx->ray_v.ray.angle) - 0.00001);
 	pi_2 = (PI / 2);
 	set_ray_coordinates_v(mlx, n_tan, pi_2, tile_dim);
 }
