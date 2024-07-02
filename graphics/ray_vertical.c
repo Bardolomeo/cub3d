@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:52:17 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/01 21:02:54 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/02 19:48:42 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,19 @@ int	casting_rays_vertical(t_mlx *mlx, int tile_dim)
 {
 	t_v2	m;
 	int		cols_rows[2];
-	t_f_v2	src_ray;
 	int		tmp;
 
 	m.x = 0;
 	m.y = 0;
 	count_cols_rows(&cols_rows[0], &cols_rows[1], mlx->map);
 	set_v_ray(mlx, tile_dim);
-	src_ray = mlx->ray_v.ray;
 	while (mlx->ray_v.dof < mlx->limit_dof)
 	{
-			m.x = (int)mlx->ray_v.ray.fx >> (int)log2(tile_dim);
-			m.y = (int)mlx->ray_v.ray.fy >> (int)log2(tile_dim);
-			tmp = ray_vertical_recalculate(&m, cols_rows, src_ray, mlx);
-			if (tmp == 1)
-				break;
+		m.x = (int)mlx->ray_v.ray.fx >> (int)log2(tile_dim);
+		m.y = (int)mlx->ray_v.ray.fy >> (int)log2(tile_dim);
+		tmp = ray_vertical_recalculate(&m, cols_rows, mlx);
+		if (tmp == 1)
+			break ;
 	}
 	return (1);
 }
-

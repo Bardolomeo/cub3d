@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/01 20:58:55 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/02 19:40:52 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,12 +200,10 @@ void			set_ray_coordinates_h(t_mlx *mlx, float coTan, int tile_dim);
 void			set_h_ray(t_mlx *mlx, int tile_dim);
 int				draw_walls(t_mlx *mlx);
 float			dist(t_v2 player, t_f_v2 ray);
-int				re_calculate_ray(t_mlx *mlx, t_v2 *m, t_f_v2 src_ray,
-					int cols_rows[2]);
+int				re_calculate_ray(t_mlx *mlx, t_v2 *m, int cols_rows[2]);
 void			set_limit_dof(int cols_rows[2], t_mlx *mlx);
 int				raycast_vertical_loop(t_mlx *mlx, t_v2 m, int nrows, int ncols);
-int				ray_vertical_recalculate(t_v2 *m, int cols_rows[2],
-					t_f_v2 src_ray, t_mlx *mlx);
+int				ray_vertical_recalculate(t_v2 *m, int cols_rows[2], t_mlx *mlx);
 
 /* FUNCTIONS */
 int				line_start(t_v2 *m, char which, t_mlx *mlx);
