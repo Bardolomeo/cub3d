@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 18:38:24 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/02 21:11:43 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/04 20:07:05 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ float	dist(t_v2 player, t_f_v2 ray)
 {
 	int		h_comp;
 	int		v_comp;
-	float		dist;
+	float	dist;
 
 	h_comp = player.x - ray.fx;
 	v_comp = player.y - ray.fy;

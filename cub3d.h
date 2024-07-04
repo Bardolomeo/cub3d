@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:55:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/02 20:49:42 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/04 18:20:09 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define DGR 0.0174533
 # define VIEWPORT_W 960
 # define VIEWPORT_H 540
+# define MAX_DOF 40
 
 typedef struct s_v2
 {
@@ -121,6 +122,7 @@ typedef struct s_mlx
 	t_keycub	keys;
 	t_v2		int_ray;
 	int			mouse_down;
+	int			max_dof_f;
 }				t_mlx;
 
 typedef struct s_rgb

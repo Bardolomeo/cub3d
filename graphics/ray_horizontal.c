@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:49:53 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/02 21:10:18 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/04 18:21:05 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	set_ray_coordinates_h(t_mlx *mlx, float coTan, int tile_dim)
 	if (mlx->ray_h.ray.angle > PI)
 	{
 		mlx->ray_h.ray.fy = ((((int)mlx->pos.y >> (int)log2(tile_dim))
-					<< (int)log2(tile_dim))) - 0.0001;
+					<< (int)log2(tile_dim))) - 0.1;
 		mlx->ray_h.ray.fx = (mlx->pos.y - mlx->ray_h.ray.fy) * coTan
 			+ mlx->pos.x;
 		mlx->ray_h.off.fy = -tile_dim;
@@ -99,8 +99,5 @@ int	casting_rays_horizontal(t_mlx *mlx, int tile_dim)
 		if (cast_res == 1)
 			break ;
 	}
-	if (mlx->ray_h.dof == mlx->limit_dof && cast_res == 0)
-		mlx->dist_h = mlx->prev_dist_h;
-	mlx->prev_dist_h = mlx->dist_h;
 	return (1);
 }

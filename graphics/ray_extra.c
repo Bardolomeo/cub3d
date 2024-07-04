@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 20:41:38 by gsapio            #+#    #+#             */
-/*   Updated: 2024/07/02 19:45:59 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/04 18:17:20 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,17 @@ int	re_calculate_ray(t_mlx *mlx, t_v2 *m, int cols_rows[2])
 void	set_limit_dof(int cols_rows[2], t_mlx *mlx)
 {
 	if (cols_rows[0] > cols_rows[1])
+	{
 		mlx->limit_dof = cols_rows[0];
+	}
 	else
+	{
 		mlx->limit_dof = cols_rows[1];
+	}
+	if (mlx->limit_dof > MAX_DOF)
+	{
+		mlx->limit_dof = MAX_DOF;
+	}
 }
 
 int	ray_vertical_recalculate(t_v2 *m, int cols_rows[2], t_mlx *mlx)
