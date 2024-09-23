@@ -6,7 +6,7 @@
 /*   By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:26:41 by gsapio            #+#    #+#             */
-/*   Updated: 2024/05/20 18:37:28 by gsapio           ###   ########.fr       */
+/*   Updated: 2024/07/04 16:50:53 by gsapio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,18 @@ int	count_map_lines(int *fd)
 	tstr = get_next_line(*fd);
 	if (!tstr)
 		return (0);
-	while (tstr)
+	while (tstr && *tstr != '\n')
 	{
 		free(tstr);
 		tstr = get_next_line(*fd);
 		count++;
 	}
+	if (tstr != NULL)
+		free(tstr);
 	return (count);
 }
 
-int	initialize_map(char ***map, int *fd)
+int	initialize_map(char **map, int *fd)
 {
 	char	*str;
 	char	*tstr;
@@ -63,7 +65,7 @@ int	initialize_map(char ***map, int *fd)
 	i = 0;
 	set_cursor_map(fd, &tstr);
 	str = ft_strtrim(tstr, "\n");
-	(*map)[i++] = str;
+	(map)[i++] = str;
 	free(tstr);
 	while (*str)
 	{
@@ -75,63 +77,61 @@ int	initialize_map(char ***map, int *fd)
 			free(str);
 			break ;
 		}
-		(*map)[i] = str;
+		(map)[i] = str;
 		i++;
 	}
+	clean_gnl(tstr, fd);
 	return (1);
 }
 
-/*per il check della mappa alla fine controllo che:
-	- ci sia un solo player
-	- se trova il player o uno zero questi devono essere circondati da altri zeri,
-		uni o dal player.
-	- Se trova uno zero o il player nei bordi della mappa esce direttamente*/
 int	check_map(char **map, t_mlx *mlx)
 {
 	int		i;
 	int		j;
 	char	player;
 
+	(void)mlx;
 	player = 0;
 	i = -1;
 	while (map[++i])
 	{
 		j = -1;
 		while (map[i][++j])
+		{
 			if (map[i][j] == '0' || valid_player(map[i][j]))
 			{
 				if (i == 0 || map[i] == NULL || j == 0 || !valid_tile(map, i,
 						j))
-					return (destroy_game_on_start(mlx));
+					return (0);
 				if (valid_player(map[i][j]))
 					player += map[i][j];
 			}
+		}
 	}
-    if (!valid_player(player))
-    {
-        return (destroy_game_on_start(mlx));
-    }
-    return (1);
+	if (!valid_player(player))
+		return (0);
+	return (1);
 }
-
 
 int	map_manager(int fd, char **argv, t_mlx *mlx)
 {
-	char **tmp_map;
-	int cnt_lines;
+	char	**tmp_map;
+	int		cnt_lines;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		return (destroy_game_on_start(mlx));
+		return (0);
 	cnt_lines = count_map_lines(&fd);
 	if (!cnt_lines || cnt_lines == 1)
-		return (destroy_game_on_start(mlx));
+		return (0);
 	close(fd);
 	tmp_map = malloc(sizeof(char *) * (cnt_lines + 1));
+	if (!tmp_map)
+		return (0);
 	tmp_map[cnt_lines] = NULL;
 	fd = open(argv[1], O_RDONLY);
-	if (!initialize_map(&tmp_map, &fd))
-		return (destroy_game_on_start(mlx));
+	if (!initialize_map(tmp_map, &fd))
+		return (0);
 	close(fd);
 	if (!check_map(tmp_map, mlx))
 	{

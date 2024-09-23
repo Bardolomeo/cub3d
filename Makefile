@@ -6,16 +6,18 @@
 #    By: gsapio <gsapio@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 16:36:33 by gsapio            #+#    #+#              #
-#    Updated: 2024/05/22 14:03:03 by gsapio           ###   ########.fr        #
+#    Updated: 2024/07/01 21:03:23 by gsapio           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_MANDATORY	=	main.c \
 					parsing/parsing.c parsing/bit_colors.c parsing/parse_elements.c \
-					utils/clean_game_closure.c utils/parsing_utils.c parsing/parse_map.c \
-					test/dda.c
+					utils/clean_game_closure.c utils/parsing_utils.c parsing/parse_map.c utils/drawing.c utils/raycasting_utils.c utils/player_pos.c \
+					game/movement.c game/keys_and_mouse.c \
+					graphics/ray_casting.c graphics/dda.c graphics/ray_vertical.c graphics/ray_horizontal.c \
+					graphics/color_manipulation.c graphics/raycasting_extra.c graphics/ray_extra.c
 
-LFLAGS = -lft -L./Libft -lmlx -Lminilibx-linux -lX11 -lXext -no-pie
+LFLAGS = -lft -L./Libft -lmlx -Lminilibx-linux -lX11 -lXext -lm -no-pie
 
 IFLAGS = -I./Libft -I./minilibx_linux
 
@@ -35,8 +37,6 @@ OBJS_MANDATORY	= $(SRCS_MANDATORY:.c=.o)
 
 # BONUS			=
 
-OBJS_BONUS		= $(BONUS:.c=.o)
-
 CC				= gcc -g
 
 RM				= rm -f
@@ -49,31 +49,31 @@ NAME			= cub3D
 
 all:			$(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -I $(HEADER) -c $< -o $@
+call_mlx:
+				echo "$(GREEN)Cloning 'mlx' via HTTP into './mlx'...$(DEF_COLOR)"; \
+				git clone https://github.com/42Paris/minilibx-linux minilibx-linux;
 
-$(NAME):		$(MLX_DIR) $(OBJS_MANDATORY)
+
+$(NAME):		$(MLX_DIR) $(SRCS_MANDATORY)
 				make -C $(LIBFT_PATH) --no-print-directory
 				make bonus -C $(LIBFT_PATH) --no-print-directory
 				make -C $(MLX_PATH) --no-print-directory
-				$(CC) $(CFLAGS) $(OBJS_MANDATORY) $(LFLAGS) $(IFLAGS) -o $(NAME)
+				$(CC) $(CFLAGS) $(SRCS_MANDATORY) $(LFLAGS) $(IFLAGS) -o $(NAME)
 
 $(MLX_DIR):
 				@git clone $(MLX)
 				@cd $(MLX_DIR) && ./configure
 
-Bonus/%.o: 		Bonus/%.c
-				$(CC) $(CFLAGS) -I /Bonus -c $< -o $@
 
-$(BONUS_NAME):	$(OBJS_BONUS)
+$(BONUS_NAME):	$(SRCS_BONUS)
 				make -C $(LIBFT_PATH) --no-print-directory
 				make -C $(MLX_PATH) --no-print-directory
-				$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(BONUS_NAME) Bonus/so_long_bonus.c $(PATH_LIBS) $(LFLAGS)
+				$(CC) $(CFLAGS) $(SRCS_BONUS) -o $(BONUS_NAME) Bonus/so_long_bonus.c $(PATH_LIBS) $(LFLAGS)
 
 bonus:			$(BONUS_NAME)
 
 clean:
-				$(RM) $(OBJS_MANDATORY) $(OBJS_BONUS)
+				$(RM)
 
 fclean:			clean
 				$(RM) $(NAME)
@@ -84,6 +84,6 @@ fclean:			clean
 				$(RM) $(MLX_PATH)/*.o
 				$(RM) $(MLX_PATH)/*.a
 
-re:				fclean call_mlx $(NAME)
+re:				fclean $(NAME)
 
 .PHONY:			all clean fclean re bonus
